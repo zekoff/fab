@@ -1,2 +1,3 @@
-# fab
-Family Achivement Board
+# Family Achivement Board
+
+Uses create-react-app and Firebase.
