@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider, FirebaseAppProvider, FirestoreProvider, useFirebaseApp } from 'reactfire';
 import App from './App';
 
@@ -36,8 +37,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <ReactfireWrapper app={<App />} />
-    </FirebaseAppProvider>
+    <BrowserRouter>
+      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+        <ReactfireWrapper app={<App />} />
+      </FirebaseAppProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
