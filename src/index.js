@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { UserProvider } from './components/UserContext';
+import { AccountProvider } from './components/AccountContext';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -22,10 +22,10 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <UserProvider>
+    <AccountProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </UserProvider>
+    </AccountProvider>
   </React.StrictMode>
 );

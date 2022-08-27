@@ -1,33 +1,17 @@
-import { Card, CardContent, Typography } from "@mui/material";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "./UserContext";
+import { Card, CardContent, List, ListItem, Typography } from "@mui/material";
 
 /**
  * Shows information about Family of signed-in user.
  */
-function FamilyCard(props) {
-  const user = useContext(UserContext);
-  const [familyId, setFamilyId] = useState(null);
-  const [familyInfo, setFamilyInfo] = useState({});
-  useEffect(() => {
-    if (!user?.uid) return;
-    const unsubscribe = onSnapshot(doc(getFirestore(), "accounts", user.uid), (doc) => {
-      setFamilyId(doc.data().family_id);
-    });
-    return unsubscribe;
-  }, [user]);
-  useEffect(() => {
-    if (!familyId) return;
-    const unsubscribe = onSnapshot(doc(getFirestore(), "families", familyId), (doc) => {
-      setFamilyInfo(doc.data());
-    });
-    return unsubscribe;
-  }, [familyId]);
+function FamilyCard({ familyInfo }) {
   return (
     <Card>
       <CardContent>
-        <Typography>Family Name: {familyInfo?.name}</Typography>
+        <Typography variant="h4">{familyInfo?.name} Family</Typography>
+        <Typography variant="h5">Family Members:</Typography>
+        <List>
+          <ListItem>TBD</ListItem>
+        </List>
       </CardContent>
     </Card>
   )
