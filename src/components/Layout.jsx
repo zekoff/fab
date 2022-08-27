@@ -4,6 +4,9 @@ import { Outlet } from "react-router-dom";
 import UserButton from "./UserButton";
 import { UserContext } from "./UserContext";
 
+/**
+ * Defines top-level layout for UI, including Router Outlet for subcomponents.
+ */
 function Layout(props) {
   const user = useContext(UserContext);
   return (

@@ -5,10 +5,7 @@ const UserContext = createContext();
 
 /**
  * React Context.Provider component to access the user currently authenticated
- * via Firebase/Auth.
- * @param {*} props 
- * @returns A React Context Provider with the currently signed-in user
- * as the Context value.
+ * via Firebase/Auth. Value will be the currently signed-in user object.
  */
 function UserProvider({ children }) {
   const [user, setUser] = useState(getAuth().currentUser);

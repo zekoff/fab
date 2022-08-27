@@ -6,8 +6,6 @@ import { UserContext } from "./UserContext";
 /**
  * Component that displays a Sign In or Sign Out button depending on user
  * authentication status.
- * @param {*} props 
- * @returns A button suited to the user's auth need
  */
 function UserButton(props) {
   const user = useContext(UserContext);
