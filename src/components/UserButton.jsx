@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
-import { GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
-import { useAuth, useUser } from "reactfire";
+import { getAuth, GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
+import { useContext } from "react";
+import { UserContext } from "./UserContext";
 
 /**
  * Component that displays a Sign In or Sign Out button depending on user
@@ -9,10 +10,8 @@ import { useAuth, useUser } from "reactfire";
  * @returns A button suited to the user's auth need
  */
 function UserButton(props) {
-  const { status: userStatus, data: user } = useUser();
-  const auth = useAuth();
-  if (userStatus === 'loading') return "Loading..."
-  return user ? <SignOutButton auth={auth} /> : <SignInButton auth={auth} />
+  const user = useContext(UserContext);
+  return user ? <SignOutButton /> : <SignInButton />
 }
 
 async function googleSignIn(auth) {
@@ -24,13 +23,15 @@ async function googleSignIn(auth) {
   }
 }
 
-function SignInButton({ auth }) {
+function SignInButton() {
+  const auth = getAuth();
   return (
     <Button onClick={() => googleSignIn(auth)}>Sign In</Button>
   )
 }
 
-function SignOutButton({ auth }) {
+function SignOutButton() {
+  const auth = getAuth();
   return (
     <Button onClick={() => signOut(auth)}>Sign Out</Button>
   )

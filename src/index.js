@@ -1,11 +1,10 @@
 import { CssBaseline } from '@mui/material';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider, FirebaseAppProvider, FirestoreProvider, useFirebaseApp } from 'reactfire';
 import App from './App';
+import { UserProvider } from './components/UserContext';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -17,30 +16,16 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
-/**
- * Wraps a component in the necessary Reactfire SDK provider components.
- * @param {*} props React props; will use the "app" prop as the component to
- * be wrapped 
- * @returns The provided app component, wrapped in Reactfire SDK provider components
- */
-function ReactfireWrapper({ app }) {
-  return (
-    <AuthProvider sdk={getAuth(useFirebaseApp())}>
-      <FirestoreProvider sdk={getFirestore(useFirebaseApp())}>
-        {app}
-      </FirestoreProvider>
-    </AuthProvider>
-  )
-}
+initializeApp(firebaseConfig);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <BrowserRouter>
-      <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <ReactfireWrapper app={<App />} />
-      </FirebaseAppProvider>
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </UserProvider>
   </React.StrictMode>
 );
