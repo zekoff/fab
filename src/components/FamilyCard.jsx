@@ -3,14 +3,15 @@ import { Button, Card, CardActions, CardContent, List, ListItem, Typography } fr
 /**
  * Shows information about Family of signed-in user.
  */
-function FamilyCard({ family }) {
+function FamilyCard({ family, avatarList }) {
   return (
     <Card>
       <CardContent>
         <Typography variant="h4">{family?.name} Family</Typography>
         <Typography variant="body1">Family Members:</Typography>
         <List>
-          <ListItem>TBD</ListItem>
+          {avatarList?.map(avatar =>
+            <ListItem key={avatar.id}>{avatar.name}</ListItem>)}
         </List>
       </CardContent>
       <CardActions>
