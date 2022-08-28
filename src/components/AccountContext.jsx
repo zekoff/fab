@@ -1,6 +1,6 @@
 import { doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
-import useUser from "../util/auth";
+import { useUser } from "../util/hooks";
 
 /** React Context to access the signed-in FAB account. */
 const AccountContext = createContext();
@@ -14,11 +14,12 @@ function AccountProvider({ children }) {
   const [account, setAccount] = useState({});
   useEffect(() => {
     if (!user?.uid) return;
+    console.log("Signing up for account snapshots");
     const unsubscribe = onSnapshot(doc(getFirestore(), "accounts", user.uid), (doc) => {
       setAccount(doc.data());
     });
     return unsubscribe;
-  }, [user, account]);
+  }, [user]);
   return (
     <AccountContext.Provider value={account}>
       {children}

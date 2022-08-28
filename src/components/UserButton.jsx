@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { getAuth, GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
-import useUser from "../util/auth";
+import { useUser } from "../util/hooks";
 
 /**
  * Component that displays a Sign In or Sign Out button depending on user
@@ -8,6 +8,8 @@ import useUser from "../util/auth";
  */
 function UserButton(props) {
   const user = useUser();
+  console.log(user);
+  if (user === undefined) return null;
   return user ? <SignOutButton /> : <SignInButton />
 }
 
