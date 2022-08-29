@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth";
-import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import { collection, doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 /**
@@ -20,7 +20,7 @@ function useUser() {
 /**
  * Custom hook to get family doc for current user. Each time this hook is
  * called, a new subscription to the family doc state will be created.
- * @param {*} account FAV account object, from which familyId is retrieved
+ * @param {*} account FAB account object, from which familyId is retrieved
  * @returns family doc/object tied to Firebase family state associated with
  * signed-in user
  */
@@ -38,8 +38,8 @@ function useFamily(account) {
 
 /**
  * Custom hook to get a list of Avatars associated with an Account's Family.
- * The returned data is a one-time get of avatar data, and does not stay
- * in sync with updates to Firestore.
+ * Each time this hook is called, a new subscription to the family's avatar
+ * list will be created.
  * @param {*} account FAB account object, from which familyId is retrieved
  * @returns a list of avatar objects which include the Firestore key and and
  * any data associated with the avatar document
@@ -48,14 +48,12 @@ function useAvatarList(account) {
   const [avatarList, setAvatarList] = useState([]);
   useEffect(() => {
     if (!account?.familyId) return;
-    async function queryAvatars() {
-      const query = collection(getFirestore(),
-        "families", account.familyId, "avatars");
-      const avatarSnapshot = await getDocs(query);
-      setAvatarList(avatarSnapshot.docs.map(doc => { return { id: doc.id, ...doc.data() } }));
-    }
-    queryAvatars();
-    // No return value; nothing to unsubscribe
+    const query = collection(getFirestore(),
+      "families", account.familyId, "avatars");
+    console.log("Signing up for avatar list updates");
+    return onSnapshot(query, (queryResult) => {
+      setAvatarList(queryResult.docs.map(doc => { return { id: doc.id, ...doc.data() } }));
+    });
   }, [account]);
   return avatarList;
 }
