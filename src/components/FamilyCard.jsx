@@ -1,4 +1,5 @@
-import { Button, Card, CardActions, CardContent, List, ListItem, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Stack, Typography } from "@mui/material";
+import AvatarSummary from "./AvatarSummary";
 
 /**
  * Shows information about Family of signed-in user.
@@ -8,11 +9,10 @@ function FamilyCard({ family, avatarList }) {
     <Card>
       <CardContent>
         <Typography variant="h4">{family?.name} Family</Typography>
-        <Typography variant="body1">Family Members:</Typography>
-        <List>
+        <Stack spacing={2}>
           {avatarList?.map(avatar =>
-            <ListItem key={avatar.id}>{avatar.name}</ListItem>)}
-        </List>
+            <AvatarSummary key={avatar.id} name={avatar.name} level={avatar.level} />)}
+        </Stack>
       </CardContent>
       <CardActions>
         <Button onClick={() => console.log(family)}>Log Family Info</Button>
