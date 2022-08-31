@@ -1,9 +1,11 @@
-import { Button, Container, List, ListItem, Typography } from "@mui/material";
+import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
+import HomeIcon from '@mui/icons-material/Home';
+import { BottomNavigation, BottomNavigationAction, Button, Container, Typography } from "@mui/material";
 import { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import "../index.css";
 import { AccountContext } from "./AccountContext";
 import UserButton from "./UserButton";
-import "../index.css"
 
 /**
  * Defines top-level layout for UI, including Router Outlet for subcomponents.
@@ -15,15 +17,11 @@ function Layout(props) {
       <Typography variant="h3">Family Achievement Board</Typography>
       <UserButton />
       <Button onClick={() => console.log(account)}>Log Account Info</Button>
-      <List>
-        <ListItem>
-          <Typography variant="button"><NavLink to="/">Home</NavLink></Typography>
-        </ListItem>
-        <ListItem>
-          <Typography variant="button"><NavLink to="/family">Family Summary</NavLink></Typography>
-        </ListItem>
-      </List>
       <Outlet />
+      <BottomNavigation showLabels sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+        <BottomNavigationAction label="Home" icon={<HomeIcon />} component={NavLink} to="/" />
+        <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="family" />
+      </BottomNavigation>
     </Container>
   )
 }

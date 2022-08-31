@@ -8,7 +8,6 @@ import { useUser } from "../util/hooks";
  */
 function UserButton(props) {
   const user = useUser();
-  console.log(user);
   if (user === undefined) return null;
   return user ? <SignOutButton /> : <SignInButton />
 }
