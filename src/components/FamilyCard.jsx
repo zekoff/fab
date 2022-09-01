@@ -11,7 +11,7 @@ function FamilyCard({ family, avatarList }) {
         <Typography variant="h4">{family?.name} Family</Typography>
         <Stack spacing={2}>
           {avatarList?.map(avatar =>
-            <AvatarSummary key={avatar.id} name={avatar.name} level={avatar.level} />)}
+            <AvatarSummary key={avatar.id} avatar={avatar} />)}
         </Stack>
       </CardContent>
       <CardActions>

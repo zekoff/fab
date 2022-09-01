@@ -1,60 +1,101 @@
 /**
- * Dataclass for FAB Account info.
+ * Creates a Firestore converter object that can be used by a FAB dataclass. Given a dataclass
+ * definition as a parameter, return a converter object that can be passed to a Firestore
+ * collection/doc reference as the parameter to withConverter.
+ * @param {class} targetClass the dataclass to use for conversion
+ * @returns a Firestore converter object for serializing data objects
+ */
+function makeConverter(targetClass) {
+  return {
+    toFirestore: (dataobject) => {
+      const objectToSend = structuredClone(dataobject);
+      delete objectToSend.id; // no impact on items without ID attributes
+      return objectToSend;
+    },
+    fromFirestore: (snapshot, options) => {
+      const data = snapshot.data(options);
+      const dataobject = new targetClass();
+      Object.keys(data).forEach(key => dataobject[key] = data[key]);
+      return dataobject;
+    }
+  }
+}
+
+/**
+ * Dataclass for FAB Firestore Account info.
  */
 class Account {
-  avatarId;     // string
-  familyAdmin;  // boolean
-  familyId;     // string
+  id; // ID string set by Firestore; same as user's Firebase Auth UID
+  avatarId; // string
+  familyAdmin; // boolean
+  familyId; // string
+
+  static converter = makeConverter(Account);
 }
 
 /**
- * Dataclass for FAB Avatar info.
+ * Dataclass for FAB Firestore Avatar info.
  */
 class Avatar {
-  name;             // string
-  level;            // number
-  xp;               // number
-  coins;            // number
-  inventory;        // Firebase collection of Item objects
-  unclaimedRewards; // list of Reward objects
-  activeQuests;     // list of Quest objects
+  id; // ID string set by Firestore
+  name = "Anonymous";
+  level = 1;
+  xp = 0;
+  coins = 0;
+  unclaimedRewards = []; // list of 0..n Reward objects
+  activeQuests = []; // list of 0..n Quest objects
   image;
+  // inventory items managed as a Firebase collection with Avatar as parent
+
+  static converter = makeConverter(Avatar);
 }
 
 /**
- * Dataclass for FAB Family info.
+ * Dataclass for FAB Firestore Family info.
  */
 class Family {
-  name;               // string
-  availableQuests;    // list of Quest objects
-  recentAchivements;  // list of strings
+  id; // ID string set by Firestore
+  name = "Anon";
+  availableQuests = []; // list of 0..n Quest objects
+  recentAchivements = []; // list of 0..n strings
+
+  static converter = makeConverter(Family);
 }
 
 /**
- * Datclass for items.
+ * Datclass for FAB Firestore Items.
  */
 class Item {
-  name;         // string
-  description;  // string
-  value;        // number
-  tags;         // list of strings
+  id; // ID string set by Firestore
+  name = "Mysterious Trinket";
+  description = "An object of awe and wonder.";
+  value = 100;
+  tags = []; // list of 0..n item tags
   image;
+
+  static converter = makeConverter(Item);
 }
 
 /**
  * Dataclass for quests.
  */
 class Quest {
-  name;         // string
-  description;  // string
-  reward;       // Reward object
+  name = "Important Task";
+  description = "An undertaking of particular importance.";
+  reward; // Reward object
+
+  static converter = makeConverter(Quest);
 }
 
-/** Dataclass for rewards. */
+/**
+ * Dataclass for rewards.
+ */
 class Reward {
-  xp;     // number
-  coins;  // number
-  items;  // list of Item objects
+  xp = 20;
+  coins = 100;
+  items = []; // list of 0..n Item IDs
+
+  static converter = makeConverter(Reward);
 }
 
 export { Account, Avatar, Family, Item, Quest, Reward };

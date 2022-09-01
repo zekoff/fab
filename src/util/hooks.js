@@ -1,6 +1,18 @@
 import { getAuth } from "firebase/auth";
 import { collection, doc, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { Avatar, Family } from "./dataclasses";
+
+/**
+ * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
+ * @param {*} doc the Firestore doc object, returned by snapshot update or other 
+ * @returns a dataobject with Firestore data including doc ID
+ */
+function getDataobjectWithId(doc) {
+  const dataobject = doc.data();
+  dataobject.id = doc.id;
+  return dataobject;
+}
 
 /**
  * Custom hook to track state of the currently signed-in user.
@@ -29,9 +41,11 @@ function useFamily(account) {
   useEffect(() => {
     if (!account?.familyId) return;
     console.log("Signing up for family snapshots");
-    return onSnapshot(doc(getFirestore(), "families", account?.familyId), (doc) => {
-      setFamily(doc.data());
-    });
+    return onSnapshot(
+      doc(getFirestore(), "families", account?.familyId).withConverter(Family.converter),
+      doc => setFamily(getDataobjectWithId(doc)),
+      doc => console.error(doc)
+    );
   }, [account]);
   return family;
 }
@@ -49,11 +63,13 @@ function useAvatarList(account) {
   useEffect(() => {
     if (!account?.familyId) return;
     const query = collection(getFirestore(),
-      "families", account.familyId, "avatars");
+      "families", account.familyId, "avatars").withConverter(Avatar.converter);
     console.log("Signing up for avatar list updates");
-    return onSnapshot(query, (queryResult) => {
-      setAvatarList(queryResult.docs.map(doc => { return { id: doc.id, ...doc.data() } }));
-    });
+    return onSnapshot(
+      query,
+      queryResult => setAvatarList(queryResult.docs.map(doc => getDataobjectWithId(doc))),
+      queryResult => console.log(queryResult)
+    );
   }, [account]);
   return avatarList;
 }
