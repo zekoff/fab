@@ -51,6 +51,27 @@ function useFamily(account) {
 }
 
 /**
+ * Custom hook to get state of an Avatar based on family/avatar IDs.
+ * @param {*} familyId the Firestore ID for avatar's family
+ * @param {*} avatarId the Firestore ID for avatar doc
+ * @returns an Avatar object synced to Firestore state
+ */
+function useAvatar(familyId, avatarId) {
+  const [avatar, setAvatar] = useState(null);
+  useEffect(() => {
+    if (!familyId || !avatarId) return;
+    console.log(`Signing up for avatar updates: ${avatarId}`);
+    return onSnapshot(
+      doc(getFirestore(), "families", familyId, "avatars", avatarId)
+        .withConverter(Avatar.converter),
+      doc => setAvatar(getDataobjectWithId(doc)),
+      doc => console.error(doc)
+    );
+  }, [familyId, avatarId]);
+  return avatar;
+}
+
+/**
  * Custom hook to get a list of Avatars associated with an Account's Family.
  * Each time this hook is called, a new subscription to the family's avatar
  * list will be created.
@@ -74,4 +95,27 @@ function useAvatarList(account) {
   return avatarList;
 }
 
-export { useUser, useFamily, useAvatarList };
+/**
+ * Custom hook to get a FAB Avatar's Inventory. Each time this hook is called,
+ * a new subscription to the avatar's inventory will be created. The returned
+ * list will be a list of Firestore IDs for documents in the item collection.
+ * @param {*} familyId Firestore ID for family
+ * @param {*} avatarId Firestore ID for avatar
+ * @returns the avatar's inventory as a list
+ */
+function useInventory(familyId, avatarId) {
+  const [inventory, setInventory] = useState([]);
+  useEffect(() => {
+    if (!familyId || !avatarId) return;
+    const query = collection(getFirestore(), "families", familyId, "avatars", avatarId, "inventory");
+    console.log(`Signing up for inventory updates on avatar ${avatarId}`);
+    return onSnapshot(
+      query,
+      queryResult => setInventory(queryResult.docs.map(doc => doc.data().itemId)),
+      queryResult => console.error(queryResult)
+    );
+  }, [familyId, avatarId]);
+  return inventory;
+}
+
+export { useUser, useFamily, useAvatar, useAvatarList, useInventory };

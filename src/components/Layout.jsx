@@ -5,6 +5,7 @@ import { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "../index.css";
 import { AccountContext } from "./AccountContext";
+import AvatarDetails from './AvatarDetails';
 import UserButton from "./UserButton";
 
 /**
@@ -17,6 +18,7 @@ function Layout(props) {
       <Typography variant="h3">Family Achievement Board</Typography>
       <UserButton />
       <Button onClick={() => console.log(account)}>Log Account Info</Button>
+      <AvatarDetails familyId={account.familyId} avatarId={account.avatarId} />
       <Outlet />
       <BottomNavigation showLabels sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
         <BottomNavigationAction label="Home" icon={<HomeIcon />} component={NavLink} to="/" />

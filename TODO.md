@@ -1,7 +1,6 @@
 # TODO
 
-- Build admin functions to create FAB objects in Firebase
-- Implement avatar inventory as subcollection of avatars
+- Build admin functions to create/update FAB objects in Firebase
 - Update security rules to allow write if familyAdmin or Account linked to Avatar
 - Component to browse and accept quests
 - Component to send Reward to another Avatar (coins/items only)
@@ -22,7 +21,8 @@
 
  - duplicates_allowed
  - stackable
- - title (can be applied as a title)
+ - is_title (can be applied as a title)
  - consumable
+ - tradeable
  - transient (when purchased, does not go into inventory)
  

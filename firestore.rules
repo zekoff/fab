@@ -11,18 +11,33 @@ service cloud.firestore {
 
         // Read and write access to user's family data
         match /families/{familyId} {
-            function getAccountData(uid) {
-                return get(/databases/$(database)/documents/accounts/$(uid)).data;
+
+            // Get account data for currently signed-in user
+            function getAccountData() {
+                return get(/databases/$(database)/documents/accounts/$(request.auth.uid)).data;
             }
+
             allow read, write: if
                 request.auth != null &&
-                getAccountData(request.auth.uid).familyId == familyId;
+                getAccountData().familyId == familyId;
 
             // Read and write to family avatars
             match /avatars/{document=**} {
                 allow read, write: if 
                     request.auth != null &&
-                    getAccountData(request.auth.uid).familyId == familyId;
+                    getAccountData().familyId == familyId;
+            }
+
+            // Read and write access to avatar inventory
+            match /avatars/{avatarId}/inventory/{document=**} {
+                allow read, write: if
+                    request.auth != null && (
+                        (getAccountData().avatarId == avatarId) ||
+                        (
+                            getAccountData().familyId == familyId &&
+                            getAccountData().familyAdmin == true
+                        )
+                    );
             }
         }
 
