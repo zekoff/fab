@@ -1,18 +1,19 @@
-import { Button } from "@mui/material";
-import { useAvatar, useInventory } from "../util/hooks";
+import { Button, Typography } from "@mui/material";
+import { useAvatar, useInventory, useGenericItemList } from "../util/hooks";
+import AvatarInventory from "./AvatarInventory";
 
 function AvatarDetails({ familyId, avatarId }) {
   const avatar = useAvatar(familyId, avatarId);
   const inventory = useInventory(familyId, avatarId);
+  const genericItemList = useGenericItemList();
   if (!avatar) return null;
   return (
     <>
-      <p>{avatar.name}</p>
+      <Typography variant="h5">{avatar.name}</Typography>
       <Button onClick={() => console.log(avatar)}>Log Avatar</Button>
       <Button onClick={() => console.log(inventory)}>Log Inventory</Button>
-      {inventory ?
-        inventory.map(item => <p key={item}>{item}</p>)
-        : null}
+      <Button onClick={() => console.log(genericItemList)}>Log ItemList</Button>
+      <AvatarInventory inventory={inventory} itemList={genericItemList} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { getAuth } from "firebase/auth";
-import { collection, doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Avatar, Family } from "./dataclasses";
+import { Avatar, Family, Item } from "./dataclasses";
 
 /**
  * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
@@ -118,4 +118,24 @@ function useInventory(familyId, avatarId) {
   return inventory;
 }
 
-export { useUser, useFamily, useAvatar, useAvatarList, useInventory };
+/**
+ * Query and return the list of items defined in the FAB Firestore. This hook
+ * performs a one-time query and returns the list. It does not maintain sync
+ * with the firestore.
+ * @returns the list of Items
+ */
+function useGenericItemList() {
+  const [itemList, setItemList] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const query = collection(getFirestore(), "items").withConverter(Item.converter);
+      console.log("Retrieving item list from Firestore");
+      const queryResult = await getDocs(query);
+      const itemListData = queryResult.docs.map(doc => getDataobjectWithId(doc));
+      setItemList(itemListData);
+    })();
+  }, []);
+  return itemList;
+}
+
+export { useUser, useFamily, useAvatar, useAvatarList, useInventory, useGenericItemList };
