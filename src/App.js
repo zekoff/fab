@@ -13,11 +13,11 @@ function App() {
   const avatar = useAvatar(family?.id, avatarId);
   const inventory = useInventory(family?.id, avatarId);
   useEffect(() => {
-    if (account?.avatarId) setAvatarId(account.avatarId); else return;
-  }, [account]);
+    if (account?.avatarId && !avatarId) setAvatarId(account.avatarId); else return;
+  }, [account, avatarId]);
   return (
     <Routes>
-      <Route path="/" element={<Layout avatar={avatarId} setAvatar={setAvatarId} />}>
+      <Route path="/" element={<Layout family={family} avatar={avatarId} setAvatar={setAvatarId} />}>
         <Route path="avatar" element={<AvatarDetails avatar={avatar} inventory={inventory} />} />
         <Route path="family" element={<FamilyCard account={account} />} />
       </Route>

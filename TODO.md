@@ -1,14 +1,13 @@
 # TODO
 
 - Build admin functions to create/update FAB objects in Firebase
-- Move some Layout elements to AppBar
 - Component to browse and accept quests
 - Component to send Reward to another Avatar (coins/items only)
 - Component to create Quest
 - Component to complete Quest
 - Component to create Reward
 - Component to send Reward (includes component to create Reward)
-- Ability switch current Avatar
+- Ability to switch current Avatar
 
 ## Backlog
 
@@ -21,6 +20,7 @@
 - Include Family-specific Item definitions in addition to FAB-wide definitions
 - Update security rules to allow write if familyAdmin or Account linked to Avatar
 - Send messages to other family members
+- Show loading indicator or null instead of brief broken image link
 
 ## Potential item tags
 
