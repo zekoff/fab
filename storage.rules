@@ -1,0 +1,12 @@
+// FAB Storage Security Rules
+
+rules_version = '2';
+service firebase.storage {
+    match /b/{bucket}/o {
+
+        // Read access to any files for any signed-in user
+        match /{allPaths=**} {
+            allow read: if request.auth != null;
+        }
+    }
+}

@@ -13,6 +13,7 @@ import UserButton from "./UserButton";
  */
 function Layout(props) {
   const account = useContext(AccountContext);
+  if (!account) return <p>Loading...</p>
   return (
     <Container>
       <Typography variant="h3">Family Achievement Board</Typography>

@@ -1,5 +1,6 @@
 import { getAuth } from "firebase/auth";
 import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { Avatar, Family, Item } from "./dataclasses";
 
@@ -21,11 +22,10 @@ function getDataobjectWithId(doc) {
  * the currently signed-in user
  */
 function useUser() {
-  const authUserObject = getAuth().currentUser;
   const [user, setUser] = useState(undefined);
   useEffect(() => {
-    getAuth().onAuthStateChanged((currentUser) => setUser(currentUser));
-  }, [authUserObject]);
+    getAuth().onAuthStateChanged(currentUser => setUser(currentUser));
+  }, []);
   return user;
 }
 
@@ -37,9 +37,13 @@ function useUser() {
  * signed-in user
  */
 function useFamily(account) {
-  const [family, setFamily] = useState({});
+  const familyDefault = null;
+  const [family, setFamily] = useState(familyDefault);
   useEffect(() => {
-    if (!account?.familyId) return;
+    if (!account?.familyId) {
+      setFamily(familyDefault);
+      return
+    };
     console.log("Signing up for family snapshots");
     return onSnapshot(
       doc(getFirestore(), "families", account?.familyId).withConverter(Family.converter),
@@ -57,9 +61,13 @@ function useFamily(account) {
  * @returns an Avatar object synced to Firestore state
  */
 function useAvatar(familyId, avatarId) {
-  const [avatar, setAvatar] = useState(null);
+  const avatarDefault = null;
+  const [avatar, setAvatar] = useState(avatarDefault);
   useEffect(() => {
-    if (!familyId || !avatarId) return;
+    if (!familyId || !avatarId) {
+      setAvatar(avatarDefault);
+      return;
+    };
     console.log(`Signing up for avatar updates: ${avatarId}`);
     return onSnapshot(
       doc(getFirestore(), "families", familyId, "avatars", avatarId)
@@ -82,7 +90,10 @@ function useAvatar(familyId, avatarId) {
 function useAvatarList(account) {
   const [avatarList, setAvatarList] = useState([]);
   useEffect(() => {
-    if (!account?.familyId) return;
+    if (!account?.familyId) {
+      setAvatarList([]);
+      return;
+    };
     const query = collection(getFirestore(),
       "families", account.familyId, "avatars").withConverter(Avatar.converter);
     console.log("Signing up for avatar list updates");
@@ -106,7 +117,10 @@ function useAvatarList(account) {
 function useInventory(familyId, avatarId) {
   const [inventory, setInventory] = useState([]);
   useEffect(() => {
-    if (!familyId || !avatarId) return;
+    if (!familyId || !avatarId) {
+      setInventory([]);
+      return
+    };
     const query = collection(getFirestore(), "families", familyId, "avatars", avatarId, "inventory");
     console.log(`Signing up for inventory updates on avatar ${avatarId}`);
     return onSnapshot(
@@ -138,4 +152,23 @@ function useGenericItemList() {
   return itemList;
 }
 
-export { useUser, useFamily, useAvatar, useAvatarList, useInventory, useGenericItemList };
+function useImageFromStorage(imagePath) {
+  const user = useUser();
+  const [imageSrc, setImageSrc] = useState(null);
+  useEffect(() => {
+    if (!user) return;
+    if (!imagePath) return;
+    const imageRef = ref(getStorage(), imagePath);
+    (async () => {
+      console.log(`downloading image ${imagePath}`);
+      const downloadUrl = await getDownloadURL(imageRef);
+      setImageSrc(downloadUrl);
+    })();
+  }, [imagePath, user]);
+  return imageSrc;
+}
+
+export {
+  useUser, useFamily, useAvatar, useAvatarList, useInventory, useGenericItemList,
+  useImageFromStorage
+};

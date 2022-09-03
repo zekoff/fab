@@ -11,12 +11,16 @@ const AccountContext = createContext();
  * via Firebase/Auth. Value will be the currently signed-in account.
  */
 function AccountProvider({ children }) {
+  const accountDefault = null;
   const user = useUser();
-  const [account, setAccount] = useState({});
+  const [account, setAccount] = useState(accountDefault);
   useEffect(() => {
-    if (!user?.uid) return;
+    if (!user) {
+      setAccount(accountDefault);
+      return;
+    };
     console.log("Signing up for account snapshots");
-    const unsubscribe = onSnapshot(
+    return onSnapshot(
       doc(getFirestore(), "accounts", user.uid).withConverter(Account.converter),
       (doc) => {
         const accountObject = doc.data();
@@ -25,7 +29,6 @@ function AccountProvider({ children }) {
       },
       doc => console.log(doc)
     );
-    return unsubscribe;
   }, [user]);
   return (
     <AccountContext.Provider value={account}>

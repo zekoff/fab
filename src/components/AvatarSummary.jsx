@@ -1,11 +1,13 @@
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
+import { useImageFromStorage } from "../util/hooks";
 
 function AvatarSummary({ avatar }) {
+  const avatarImage = useImageFromStorage(avatar.image);
   return (
     <Paper>
       <Grid container padding={2} spacing={10} alignItems={"center"} justifyContent="space-evenly">
         <Grid item xs={2}>
-          <Avatar alt={avatar.name}>{Array.from(avatar.name)[0]}</Avatar>
+          <Avatar alt={avatar.name} src={avatarImage} />
         </Grid>
         <Grid item xs={4}>
           <Typography>{avatar.name}</Typography>
