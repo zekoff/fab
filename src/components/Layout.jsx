@@ -1,11 +1,11 @@
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import HomeIcon from '@mui/icons-material/Home';
-import { AppBar, BottomNavigation, BottomNavigationAction, Container, Toolbar, Typography } from "@mui/material";
+import PersonIcon from '@mui/icons-material/Person';
+import { AppBar, BottomNavigation, BottomNavigationAction, Container, LinearProgress, Toolbar, Typography } from "@mui/material";
 import { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "../index.css";
 import { AccountContext } from "./AccountContext";
-import AvatarDetails from './AvatarDetails';
 import UserButton from "./UserButton";
 
 /**
@@ -21,13 +21,11 @@ function Layout(props) {
       </Toolbar>
     </AppBar>
     <Container>
-      {account ? <>
-        <AvatarDetails familyId={account.familyId} avatarId={account.avatarId} />
-        <Outlet />
-      </> : <p>Loading...</p>}
+      {account ? <Outlet /> : <LinearProgress />}
     </Container>
     <BottomNavigation showLabels sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
       <BottomNavigationAction label="Home" icon={<HomeIcon />} component={NavLink} to="/" />
+      <BottomNavigationAction label="Avatar" icon={<PersonIcon />} component={NavLink} to="avatar" />
       <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="family" />
     </BottomNavigation>
   </>

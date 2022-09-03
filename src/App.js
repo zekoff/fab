@@ -1,18 +1,25 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AccountContext } from "./components/AccountContext";
+import AvatarDetails from "./components/AvatarDetails";
 import FamilyCard from "./components/FamilyCard";
 import Layout from "./components/Layout";
-import { useAvatarList, useFamily } from "./util/hooks";
+import { useAvatar, useFamily, useInventory } from "./util/hooks";
 
 function App() {
   const account = useContext(AccountContext);
   const family = useFamily(account);
-  const avatarList = useAvatarList(account);
+  const [avatarId, setAvatarId] = useState(account?.avatarId);
+  const avatar = useAvatar(family?.id, avatarId);
+  const inventory = useInventory(family?.id, avatarId);
+  useEffect(() => {
+    if (account?.avatarId) setAvatarId(account.avatarId); else return;
+  }, [account]);
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="family" element={<FamilyCard family={family} avatarList={avatarList} />} />
+      <Route path="/" element={<Layout avatar={avatarId} setAvatar={setAvatarId} />}>
+        <Route path="avatar" element={<AvatarDetails avatar={avatar} inventory={inventory} />} />
+        <Route path="family" element={<FamilyCard account={account} />} />
       </Route>
     </Routes>
   );

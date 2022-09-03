@@ -160,7 +160,7 @@ function useImageFromStorage(imagePath) {
     if (!imagePath) return;
     const imageRef = ref(getStorage(), imagePath);
     (async () => {
-      console.log(`downloading image ${imagePath}`);
+      console.log(`Fetching URL for image ${imagePath}`);
       const downloadUrl = await getDownloadURL(imageRef);
       setImageSrc(downloadUrl);
     })();
