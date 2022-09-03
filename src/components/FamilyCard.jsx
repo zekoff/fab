@@ -7,6 +7,9 @@ import AvatarSummary from "./AvatarSummary";
  */
 function FamilyCard({ family, avatarList }) {
   function testAvatarUpdate(avatar) {
+    const n = Math.ceil(Math.random() * 8);
+    const image = `heroes/oryx_16bit_fantasy_creatures_0${n}.png`;
+    avatar.image = image;
     updateAvatar(family.id, avatar);
   }
   return (

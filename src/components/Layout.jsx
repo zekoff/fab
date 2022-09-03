@@ -1,6 +1,6 @@
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import HomeIcon from '@mui/icons-material/Home';
-import { BottomNavigation, BottomNavigationAction, Button, Container, Typography } from "@mui/material";
+import { AppBar, BottomNavigation, BottomNavigationAction, Container, Toolbar, Typography } from "@mui/material";
 import { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "../index.css";
@@ -13,20 +13,24 @@ import UserButton from "./UserButton";
  */
 function Layout(props) {
   const account = useContext(AccountContext);
-  if (!account) return <p>Loading...</p>
-  return (
+  return <>
+    <AppBar position="sticky" sx={{ mb: 2 }}>
+      <Toolbar>
+        <Typography variant='h5' sx={{ flexGrow: 1 }}>Family Achivement Board</Typography>
+        <UserButton sx={{ flexGrow: 0 }} />
+      </Toolbar>
+    </AppBar>
     <Container>
-      <Typography variant="h3">Family Achievement Board</Typography>
-      <UserButton />
-      <Button onClick={() => console.log(account)}>Log Account Info</Button>
-      <AvatarDetails familyId={account.familyId} avatarId={account.avatarId} />
-      <Outlet />
-      <BottomNavigation showLabels sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-        <BottomNavigationAction label="Home" icon={<HomeIcon />} component={NavLink} to="/" />
-        <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="family" />
-      </BottomNavigation>
+      {account ? <>
+        <AvatarDetails familyId={account.familyId} avatarId={account.avatarId} />
+        <Outlet />
+      </> : <p>Loading...</p>}
     </Container>
-  )
+    <BottomNavigation showLabels sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+      <BottomNavigationAction label="Home" icon={<HomeIcon />} component={NavLink} to="/" />
+      <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="family" />
+    </BottomNavigation>
+  </>
 }
 
 export default Layout;

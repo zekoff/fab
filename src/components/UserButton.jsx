@@ -24,14 +24,14 @@ async function googleSignIn(auth) {
 function SignInButton() {
   const auth = getAuth();
   return (
-    <Button onClick={() => googleSignIn(auth)}>Sign In</Button>
+    <Button variant="contained" onClick={() => googleSignIn(auth)}>Sign In</Button>
   )
 }
 
 function SignOutButton() {
   const auth = getAuth();
   return (
-    <Button onClick={() => signOut(auth)}>Sign Out</Button>
+    <Button variant="contained" onClick={() => signOut(auth)}>Sign Out</Button>
   )
 }
 
