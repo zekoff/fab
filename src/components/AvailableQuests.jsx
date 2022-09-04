@@ -1,4 +1,6 @@
 import { Box, Button, Card, CardActions, CardContent, Divider, LinearProgress, Stack, Typography } from "@mui/material";
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { acceptQuest, deleteQuest } from "../util/firestoreWrite";
 import { useAvailableQuests } from "../util/hooks";
 
@@ -30,6 +32,7 @@ function AvailableQuests({ familyId, avatarId, sx }) {
               <CardActions>
                 <Button
                   variant="contained"
+                  startIcon={<AddCircleIcon />}
                   onClick={() => acceptQuest(familyId, avatarId, quest)}
                 >
                   Accept Quest
@@ -37,6 +40,7 @@ function AvailableQuests({ familyId, avatarId, sx }) {
                 <Button
                   variant="outlined"
                   color="error"
+                  startIcon={<DeleteIcon />}
                   onClick={() => deleteQuest(familyId, quest)}
                 >
                   Delete Quest

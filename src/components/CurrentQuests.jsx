@@ -1,4 +1,6 @@
 import { Box, Button, Card, CardActions, CardContent, Divider, LinearProgress, Stack, Typography } from "@mui/material";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { abandonQuest, completeQuest } from "../util/firestoreWrite";
 import { useCurrentQuests } from "../util/hooks";
 
@@ -28,6 +30,7 @@ function CurrentQuests({ familyId, avatarId, sx }) {
               <Button
                 variant="contained"
                 color="success"
+                startIcon={<CheckCircleIcon />}
                 onClick={() => completeQuest(familyId, avatarId, quest)}
               >
                 Complete Quest
@@ -35,6 +38,7 @@ function CurrentQuests({ familyId, avatarId, sx }) {
               <Button
                 variant="outlined"
                 color="error"
+                startIcon={<RemoveCircleIcon />}
                 onClick={() => abandonQuest(familyId, avatarId, quest)}
               >
                 Abandon Quest

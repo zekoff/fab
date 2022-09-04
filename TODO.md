@@ -8,10 +8,14 @@
 - Add fanfare/juice for level-ups and opening treasure boxes
 - Add summary of completed quest to recent family achievements
 - Add avatar name and image to AppBar
+- Allow direct addition of a family achievement
+- Add toast or similar feedback when quest is created, completed, abandoned, etc.
 
 ## Backlog
 
 - Implement item tag options as enum-like
+- Add toggle to account menu to show screens as if a non-admin is logged in
+- Disable create quest and certain quest buttons if not family admin
 - If user is not logged in, redirect UI to sign-in page
 - Build account creation screens
 - Implement one-time sign-up codes for family admins to extend invitations
