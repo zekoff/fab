@@ -1,7 +1,7 @@
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
 import { useImageFromStorage } from "../util/hooks";
 
-function AvatarSummary({ avatar, testAvatarUpdateFunction }) {
+function AvatarSummary({ family, avatar, testAvatarUpdateFunction }) {
   const avatarImage = useImageFromStorage(avatar.image);
   return (
     <Paper>
@@ -20,7 +20,7 @@ function AvatarSummary({ avatar, testAvatarUpdateFunction }) {
             avatar.coins = Math.floor(Math.random() * 100);
             avatar.level = Math.ceil(Math.random() * 10);
             console.log(avatar);
-            testAvatarUpdateFunction(avatar);
+            testAvatarUpdateFunction(family, avatar);
           }}>Test Avatar</Button>
         </Grid>
       </Grid>
