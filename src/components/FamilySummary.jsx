@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, LinearProgress, Stack, Typography } from "@mui/material";
 import { updateAvatar } from "../util/firestoreWrite";
 import { useAvatarList, useFamily } from "../util/hooks";
 import AvatarSummary from "./AvatarSummary";
@@ -6,7 +6,7 @@ import AvatarSummary from "./AvatarSummary";
 /**
  * Shows information about Family of signed-in user.
  */
-function FamilyCard({ account }) {
+function FamilySummary({ account }) {
   const family = useFamily(account);
   const avatarList = useAvatarList(account);
   if (![account, family, avatarList].every(Boolean)) return <LinearProgress />;
@@ -17,19 +17,14 @@ function FamilyCard({ account }) {
     updateAvatar(family?.id, avatar);
   }
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h4">{family.name} Family</Typography>
-        <Stack spacing={2}>
-          {avatarList?.map(avatar =>
-            <AvatarSummary key={avatar.id} family={family} avatar={avatar} testAvatarUpdateFunction={testAvatarUpdate} />)}
-        </Stack>
-      </CardContent>
-      <CardActions>
-        <Button onClick={() => console.log(family)}>Log Family Info</Button>
-      </CardActions>
-    </Card>
+    <Box>
+      <Typography variant="h4">{family.name} Family Members</Typography>
+      <Stack spacing={2}>
+        {avatarList?.map(avatar =>
+          <AvatarSummary key={avatar.id} family={family} avatar={avatar} testAvatarUpdateFunction={testAvatarUpdate} />)}
+      </Stack>
+    </Box>
   )
 }
 
-export default FamilyCard;
+export default FamilySummary;

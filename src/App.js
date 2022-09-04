@@ -4,9 +4,10 @@ import { AccountContext } from "./components/AccountContext";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
 import AvatarInventory from "./components/AvatarInventory";
+import CreateQuest from "./components/CreateQuest";
 import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
-import FamilyCard from "./components/FamilyCard";
+import FamilySummary from "./components/FamilySummary";
 import Layout from "./components/Layout";
 import { useAvatar, useAvatarList, useFamily, useGenericItemList, useInventory } from "./util/hooks";
 
@@ -28,7 +29,7 @@ function App() {
         <Route index element={
           <>
             <FamilyAchievements account={account} />
-            <FamilyCard account={account} />
+            <FamilySummary account={account} />
           </>
         } />
         <Route path="avatar" element={
@@ -40,7 +41,8 @@ function App() {
         <Route path="quests" element={
           <>
             <CurrentQuests familyId={family?.id} avatarId={avatarId} sx={{ marginBottom: 2 }} />
-            <AvailableQuests account={account} />
+            <AvailableQuests familyId={family?.id} avatarId={avatarId} sx={{ marginBottom: 2 }} />
+            <CreateQuest familyId={family?.id} />
           </>
         } />
       </Route>

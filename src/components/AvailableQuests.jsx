@@ -1,5 +1,6 @@
-import { Button, Card, CardActions, CardContent, Divider, LinearProgress, Stack, Typography } from "@mui/material";
-import { useAvailableQuests, useFamily } from "../util/hooks";
+import { Box, Button, Card, CardActions, CardContent, Divider, LinearProgress, Stack, Typography } from "@mui/material";
+import { acceptQuest, deleteQuest } from "../util/firestoreWrite";
+import { useAvailableQuests } from "../util/hooks";
 
 /**
  * Component that shows all available family quests, and allows an Avatar to
@@ -8,30 +9,44 @@ import { useAvailableQuests, useFamily } from "../util/hooks";
  * @returns the family available quest component, or loading bar if the family
  * state has not loaded yet
  */
-function AvailableQuests({ account }) {
-  const family = useFamily(account);
-  const availableQuests = useAvailableQuests(family?.id);
-  if (availableQuests === null) return <LinearProgress />;
+function AvailableQuests({ familyId, avatarId, sx }) {
+  const availableQuests = useAvailableQuests(familyId);
+  if (availableQuests === null || !avatarId) return <LinearProgress />;
   return (
-    <>
+    <Box sx={sx}>
       <Typography variant="h4">Available Quests</Typography>
-      <Stack>
-        {availableQuests.map(quest => {
-          return (<Card key={quest.id}>
-            <CardContent>
-              <Typography variant="h5">{quest.name}</Typography>
-              <Divider />
-              <Typography variant="body">{quest.description}</Typography>
-              <br />
-              <Typography variant="caption">Reward: {"[NYI]"}</Typography>
-            </CardContent>
-            <CardActions>
-              <Button>Accept Quest</Button>
-            </CardActions>
-          </Card>)
-        })}
-      </Stack>
-    </>
+      {availableQuests.length === 0 ?
+        <Typography>There are no quests available.</Typography> :
+        <Stack>
+          {availableQuests.map(quest => {
+            return (<Card key={quest.id}>
+              <CardContent>
+                <Typography variant="h5">{quest.name}</Typography>
+                <Divider />
+                <Typography variant="body">{quest.description}</Typography>
+                <br />
+                <Typography variant="caption">Reward: {"[NYI]"}</Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  variant="contained"
+                  onClick={() => acceptQuest(familyId, avatarId, quest)}
+                >
+                  Accept Quest
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => deleteQuest(familyId, quest)}
+                >
+                  Delete Quest
+                </Button>
+              </CardActions>
+            </Card>)
+          })}
+        </Stack>
+      }
+    </Box>
   );
 }
 

@@ -1,16 +1,13 @@
 # TODO
 
-- Build admin functions to create/update FAB objects in Firebase
 - Component to send Treasure to another Avatar (coins/items only)
-- Component to create Quest
-- Component to review and accept Quests
-- Component to review and approve accepted/completed quests (when admin marks complete, recent achievement is generated and the associated reward goes to Avatar's unclaimed rewards)
 - Component to create Reward
 - Component to send Reward (includes component to create Reward)
-- Component to receive rewards and open treasure boxes
+- Component to receive rewards and open treasure boxes (add to Avatar screen)
 - Shop component
 - Add fanfare/juice for level-ups and opening treasure boxes
-- Show current active quests in Avatar display
+- Add summary of completed quest to recent family achievements
+- Add avatar name and image to AppBar
 
 ## Backlog
 
@@ -26,7 +23,8 @@
 - Show loading indicator or null instead of brief broken image link
 - Extact custom AppBar / Dialog from Layout into custom component
 - Create email/password login form
-- Add configurable themes (fantasy, sci-fi, western...) with different images and text (Quests vs Bounties, Coins vs Credits, etc.)
+- Add configurable themes (fantasy, sci-fi, western...) with different images and text (Quests vs Bounties, Coins vs Credits, Treasure Chest vs Reward Cache etc.)
+- Disable buttons that cause server actions after they are used, until they disappear
 
 ## Potential item tags
 
