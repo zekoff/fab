@@ -38,7 +38,7 @@ function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvat
 /**
  * Defines top-level layout for UI, including Router Outlet for subcomponents.
  */
-function Layout({ family, avatarId, setAvatarId, avatarList }) {
+function Layout({ setAvatarId, avatarList }) {
   const user = useUser();
   const account = useContext(AccountContext);
   const [dialogOpen, setDialogOpen] = useState(false);

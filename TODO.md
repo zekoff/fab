@@ -26,6 +26,7 @@
 - Show loading indicator or null instead of brief broken image link
 - Extact custom AppBar / Dialog from Layout into custom component
 - Create email/password login form
+- Add configurable themes (fantasy, sci-fi, western...) with different images and text (Quests vs Bounties, Coins vs Credits, etc.)
 
 ## Potential item tags
 

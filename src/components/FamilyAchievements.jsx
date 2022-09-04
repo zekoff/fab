@@ -8,9 +8,9 @@ function FamilyAchievements({ account }) {
     <>
       <Typography variant="h3">Recent {family.name} Achievements</Typography>
       <List>
-        {family.recentAchievements.map(achievement => {
+        {family.recentAchievements.map((achievement, index) => {
           return (
-            <ListItem>
+            <ListItem key={index}>
               <ListItemText primary={achievement.description} />
             </ListItem>
           )

@@ -4,6 +4,7 @@ import { AccountContext } from "./components/AccountContext";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
 import AvatarInventory from "./components/AvatarInventory";
+import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
 import FamilyCard from "./components/FamilyCard";
 import Layout from "./components/Layout";
@@ -23,7 +24,7 @@ function App() {
   }, [account, avatarId]);
   return (
     <Routes>
-      <Route path="/" element={<Layout family={family} avatar={avatarId} setAvatarId={setAvatarId} avatarList={avatarList} />}>
+      <Route path="/" element={<Layout setAvatarId={setAvatarId} avatarList={avatarList} />}>
         <Route index element={
           <>
             <FamilyAchievements account={account} />
@@ -38,6 +39,7 @@ function App() {
         } />
         <Route path="quests" element={
           <>
+            <CurrentQuests familyId={family?.id} avatarId={avatarId} sx={{ marginBottom: 2 }} />
             <AvailableQuests account={account} />
           </>
         } />
