@@ -1,12 +1,14 @@
 # TODO
 
 - Build admin functions to create/update FAB objects in Firebase
-- Component to browse and accept quests
-- Component to send Reward to another Avatar (coins/items only)
+- Component to send Treasure to another Avatar (coins/items only)
 - Component to create Quest
-- Component to complete Quest
+- Component to review and accept Quests
+- Component to review and approve accepted/completed quests (when admin marks complete, recent achievement is generated and the associated reward goes to Avatar's unclaimed rewards)
 - Component to create Reward
 - Component to send Reward (includes component to create Reward)
+- Component to receive rewards and open treasure boxes
+- Shop component
 
 ## Backlog
 
@@ -27,6 +29,6 @@
 - stackable
 - is_title (can be applied as a title)
 - consumable
-- tradeable
+- tradeable (can be sent to another as Treasure)
 - transient (when purchased, does not go into inventory)
 - family_defined (created by family admin, and applicable only to that family, contained in family item list vs. defined in top-level Firestore collection)
