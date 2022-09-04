@@ -1,27 +1,56 @@
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
-import { AppBar, BottomNavigation, BottomNavigationAction, Button, Container, Divider, LinearProgress, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import PersonIcon from '@mui/icons-material/Person';
+import { AppBar, BottomNavigation, BottomNavigationAction, Button, Container, Dialog, DialogTitle, Divider, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { getAuth, signOut } from 'firebase/auth';
 import { useContext, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "../index.css";
+import { useUser } from '../util/hooks';
 import { AccountContext } from "./AccountContext";
 import UserButton from "./UserButton";
-import { getAuth, signOut } from 'firebase/auth';
-import { useUser } from '../util/hooks';
+
+function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvatarId }) {
+  return (
+    <Dialog onClose={handleDialogClose} open={dialogOpen}>
+      <DialogTitle>Switch to Avatar:</DialogTitle>
+      <List>
+        {avatarList.map(avatar => {
+          return (<ListItem
+            key={avatar.id}
+            button
+            onClick={() => {
+              handleDialogClose();
+              setAvatarId(avatar.id);
+            }}
+          >
+            <ListItemText primary={avatar.name} />
+          </ListItem>)
+        })}
+      </List>
+    </Dialog>
+  )
+}
 
 /**
  * Defines top-level layout for UI, including Router Outlet for subcomponents.
  */
-function Layout({ family, avatarId, setAvatarId }) {
+function Layout({ family, avatarId, setAvatarId, avatarList }) {
   const user = useUser();
   const account = useContext(AccountContext);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const handleMenu = event => setMenuAnchorEl(event.currentTarget);
-  const handleClose = () => setMenuAnchorEl(null);
+  const handleMenuClose = () => setMenuAnchorEl(null);
   return <>
+    <AvatarChangeDialog
+      dialogOpen={dialogOpen}
+      avatarList={avatarList}
+      handleDialogClose={() => setDialogOpen(false)}
+      setAvatarId={setAvatarId}
+    />
     <AppBar position="sticky" sx={{ mb: 2 }}>
       <Toolbar>
         <Typography variant='h5' sx={{ flexGrow: 1 }}>Family Achivement Board</Typography>
@@ -35,9 +64,12 @@ function Layout({ family, avatarId, setAvatarId }) {
           anchorEl={menuAnchorEl}
           keepMounted
           open={Boolean(menuAnchorEl)}
-          onClose={handleClose}
+          onClose={handleMenuClose}
         >
-          <MenuItem>
+          <MenuItem onClick={() => {
+            handleMenuClose();
+            setDialogOpen(true);
+          }}>
             <ListItemIcon>
               <ChangeCircleIcon />
             </ListItemIcon>
@@ -45,7 +77,7 @@ function Layout({ family, avatarId, setAvatarId }) {
           </MenuItem>
           <Divider />
           <MenuItem onClick={() => {
-            handleClose();
+            handleMenuClose();
             signOut(getAuth());
           }}>
             <ListItemIcon>
