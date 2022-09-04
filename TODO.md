@@ -7,7 +7,6 @@
 - Component to complete Quest
 - Component to create Reward
 - Component to send Reward (includes component to create Reward)
-- Ability to switch current Avatar
 
 ## Backlog
 

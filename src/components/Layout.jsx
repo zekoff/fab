@@ -3,6 +3,7 @@ import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { AppBar, BottomNavigation, BottomNavigationAction, Button, Container, Dialog, DialogTitle, Divider, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { getAuth, signOut } from 'firebase/auth';
 import { useContext, useState } from "react";
@@ -74,6 +75,12 @@ function Layout({ family, avatarId, setAvatarId, avatarList }) {
               <ChangeCircleIcon />
             </ListItemIcon>
             <ListItemText primary="Change Avatar" />
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Admin [NYI]" />
           </MenuItem>
           <Divider />
           <MenuItem onClick={() => {

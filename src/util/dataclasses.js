@@ -57,7 +57,7 @@ class Family {
   id; // ID string set by Firestore
   name = "Anon";
   availableQuests = []; // list of 0..n Quest objects
-  recentAchivements = []; // list of 0..n strings
+  recentAchievements = []; // list of 0..n Achievement objects
 
   static converter = makeConverter(Family);
 }
@@ -98,4 +98,14 @@ class Reward {
   static converter = makeConverter(Reward);
 }
 
-export { Account, Avatar, Family, Item, Quest, Reward };
+/**
+ * Dataclass for an achievement to display.
+ */
+class Achievement {
+  timestamp = 0; // seconds since epoch
+  avatar; // the person who accomplished this
+  description = "Something the family can be proud of!";
+  image;
+}
+
+export { Account, Avatar, Family, Item, Quest, Reward, Achievement };
