@@ -2,7 +2,7 @@ import { getAuth } from "firebase/auth";
 import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { Avatar, Family, Item } from "./dataclasses";
+import { Avatar, Family, Item, Quest } from "./dataclasses";
 
 /**
  * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
@@ -133,6 +133,59 @@ function useInventory(familyId, avatarId) {
 }
 
 /**
+ * Custom hook to get the list of current Quests for an avatar.
+ * @param {*} familyId the Firestore ID of the family
+ * @param {*} avatarId Firestore ID of the avatar
+ * @returns the list of current quests, possibly empty, or null if the familyID
+ * or avatarID was null
+ */
+function useCurrentQuests(familyId, avatarId) {
+  const defaultQuests = null;
+  const [quests, setQuests] = useState(defaultQuests);
+  useEffect(() => {
+    if (!familyId || !avatarId) {
+      setQuests(defaultQuests);
+      return;
+    }
+    const query = collection(getFirestore(), "families", familyId, "avatars",
+      avatarId, "currentQuests").withConverter(Quest.converter);
+    console.log(`Signing up for quest updates on avatar ${avatarId}`);
+    return onSnapshot(
+      query,
+      queryResult => setQuests(queryResult.docs.map(doc => getDataobjectWithId(doc))),
+      queryResult => console.error(queryResult)
+    );
+  }, [familyId, avatarId]);
+  return quests;
+}
+
+/**
+ * Custom hook to get the available Quests for a family.
+ * @param {*} familyId the Firestore family document ID
+ * @returns a list of Quests synced to Firestore, possibly empty, or null if
+ * the familyId was null
+ */
+function useAvailableQuests(familyId) {
+  const defaultQuests = null;
+  const [quests, setQuests] = useState(defaultQuests);
+  useEffect(() => {
+    if (!familyId) {
+      setQuests(defaultQuests);
+      return;
+    }
+    const query = collection(getFirestore(), "families", familyId, "availableQuests")
+      .withConverter(Quest.converter);
+    console.log(`Signing up for quest updates on family ${familyId}`);
+    return onSnapshot(
+      query,
+      queryResult => setQuests(queryResult.docs.map(doc => getDataobjectWithId(doc))),
+      queryResult => console.error(queryResult)
+    );
+  }, [familyId]);
+  return quests;
+}
+
+/**
  * Query and return the list of items defined in the FAB Firestore. This hook
  * performs a one-time query and returns the list. It does not maintain sync
  * with the firestore.
@@ -152,6 +205,12 @@ function useGenericItemList() {
   return itemList;
 }
 
+/**
+ * Get a URL for an image that is stored in Firebase Storage. The returned URL
+ * is suitable as an image src tag.
+ * @param {*} imagePath the Firebase Storage file location
+ * @returns valid URL of the image file
+ */
 function useImageFromStorage(imagePath) {
   const user = useUser();
   const [imageSrc, setImageSrc] = useState(null);
@@ -170,5 +229,5 @@ function useImageFromStorage(imagePath) {
 
 export {
   useUser, useFamily, useAvatar, useAvatarList, useInventory, useGenericItemList,
-  useImageFromStorage
+  useImageFromStorage, useCurrentQuests, useAvailableQuests
 };

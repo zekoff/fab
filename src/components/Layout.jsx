@@ -1,6 +1,6 @@
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
-import HomeIcon from '@mui/icons-material/Home';
+import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -54,7 +54,7 @@ function Layout({ family, avatarId, setAvatarId, avatarList }) {
     />
     <AppBar position="sticky" sx={{ mb: 2 }}>
       <Toolbar>
-        <Typography variant='h5' sx={{ flexGrow: 1 }}>Family Achivement Board</Typography>
+        <Typography variant='h5' sx={{ flexGrow: 1 }}>Family Achievement Board</Typography>
         {user === null ?
           <UserButton sx={{ flexGrow: 0 }} /> :
           <Button sx={{ flexGrow: 0 }} variant="contained" onClick={handleMenu}>Account Menu</Button>
@@ -99,9 +99,9 @@ function Layout({ family, avatarId, setAvatarId, avatarList }) {
       {account ? <Outlet /> : <LinearProgress />}
     </Container>
     <BottomNavigation showLabels sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-      <BottomNavigationAction label="Home" icon={<HomeIcon />} component={NavLink} to="/" />
+      <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="/" />
       <BottomNavigationAction label="Avatar" icon={<PersonIcon />} component={NavLink} to="avatar" />
-      <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="family" />
+      <BottomNavigationAction label="Quests" icon={<AssignmentLateIcon />} component={NavLink} to="quests" />
     </BottomNavigation>
   </>
 }

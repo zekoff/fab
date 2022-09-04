@@ -28,9 +28,28 @@ service cloud.firestore {
                     getAccountData().familyId == familyId;
             }
 
+            // Read and write family quests
+            match /availableQuests/{document=**} {
+                allow read, write: if
+                    request.auth != null &&
+                    getAccountData().familyId == familyId;
+            }
+
             // Read and write access to avatar inventory
             match /avatars/{avatarId}/inventory/{document=**} {
                 allow read, write: if
+                    request.auth != null && (
+                        (getAccountData().avatarId == avatarId) ||
+                        (
+                            getAccountData().familyId == familyId &&
+                            getAccountData().familyAdmin == true
+                        )
+                    );
+            }
+
+            // Read and write access to avatar current quests
+            match /avatars/{avatarId}/inventory/{document=**} {
+                allow read, write: if 
                     request.auth != null && (
                         (getAccountData().avatarId == avatarId) ||
                         (

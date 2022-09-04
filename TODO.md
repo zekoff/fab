@@ -10,6 +10,7 @@
 - Component to receive rewards and open treasure boxes
 - Shop component
 - Add fanfare/juice for level-ups and opening treasure boxes
+- Show current active quests in Avatar display
 
 ## Backlog
 
@@ -23,6 +24,8 @@
 - Update security rules to allow write if familyAdmin or Account linked to Avatar
 - Send messages to other family members
 - Show loading indicator or null instead of brief broken image link
+- Extact custom AppBar / Dialog from Layout into custom component
+- Create email/password login form
 
 ## Potential item tags
 

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { AccountContext } from "./components/AccountContext";
+import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
 import AvatarInventory from "./components/AvatarInventory";
 import FamilyAchievements from "./components/FamilyAchievements";
@@ -23,14 +24,23 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout family={family} avatar={avatarId} setAvatarId={setAvatarId} avatarList={avatarList} />}>
-        <Route index element={<FamilyAchievements account={account} />} />
+        <Route index element={
+          <>
+            <FamilyAchievements account={account} />
+            <FamilyCard account={account} />
+          </>
+        } />
         <Route path="avatar" element={
           <>
             <AvatarDetails avatar={avatar} />
             <AvatarInventory inventory={inventory} itemList={itemList} />
           </>
         } />
-        <Route path="family" element={<FamilyCard account={account} />} />
+        <Route path="quests" element={
+          <>
+            <AvailableQuests account={account} />
+          </>
+        } />
       </Route>
     </Routes>
   );

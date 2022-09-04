@@ -6,3 +6,4 @@ Firebase components used:
 - Authentication
 - Firestore Database
 - Storage
+- Hosting
