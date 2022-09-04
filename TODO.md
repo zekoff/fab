@@ -9,6 +9,7 @@
 - Component to send Reward (includes component to create Reward)
 - Component to receive rewards and open treasure boxes
 - Shop component
+- Add fanfare/juice for level-ups and opening treasure boxes
 
 ## Backlog
 
