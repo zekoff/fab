@@ -2,7 +2,7 @@ import { getAuth } from "firebase/auth";
 import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { Avatar, Family, Item, Quest } from "./dataclasses";
+import { Account, Avatar, Family, Item, Quest } from "./dataclasses";
 
 /**
  * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
@@ -27,6 +27,34 @@ function useUser() {
     getAuth().onAuthStateChanged(currentUser => setUser(currentUser));
   }, []);
   return user;
+}
+
+/**
+ * Custom hook to get a FAB Account object linked to the currently signed-in
+ * user.
+ * @returns the FAB account object for the current user, or null if no user
+ */
+function useAccount() {
+  const accountDefault = null;
+  const user = useUser();
+  const [account, setAccount] = useState(accountDefault);
+  useEffect(() => {
+    if (!user) {
+      setAccount(accountDefault);
+      return;
+    };
+    console.log("Signing up for account snapshots");
+    return onSnapshot(
+      doc(getFirestore(), "accounts", user.uid).withConverter(Account.converter),
+      (doc) => {
+        const accountObject = doc.data();
+        accountObject.id = doc.id;
+        setAccount(accountObject);
+      },
+      doc => console.log(doc)
+    );
+  }, [user]);
+  return account;
 }
 
 /**
@@ -228,6 +256,6 @@ function useImageFromStorage(imagePath) {
 }
 
 export {
-  useUser, useFamily, useAvatar, useAvatarList, useInventory, useGenericItemList,
-  useImageFromStorage, useCurrentQuests, useAvailableQuests
+  useUser, useAccount, useFamily, useAvatar, useAvatarList, useInventory,
+  useGenericItemList, useImageFromStorage, useCurrentQuests, useAvailableQuests
 };

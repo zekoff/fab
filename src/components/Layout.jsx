@@ -1,16 +1,15 @@
+import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
-import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { AppBar, BottomNavigation, BottomNavigationAction, Button, Container, Dialog, DialogTitle, Divider, LinearProgress, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
 import { getAuth, signOut } from 'firebase/auth';
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import "../index.css";
 import { useUser } from '../util/hooks';
-import { AccountContext } from "./AccountContext";
 import UserButton from "./UserButton";
 
 function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvatarId }) {
@@ -38,9 +37,8 @@ function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvat
 /**
  * Defines top-level layout for UI, including Router Outlet for subcomponents.
  */
-function Layout({ setAvatarId, avatarList }) {
+function Layout({ account, setAvatarId, avatarList }) {
   const user = useUser();
-  const account = useContext(AccountContext);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const handleMenu = event => setMenuAnchorEl(event.currentTarget);

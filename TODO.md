@@ -26,7 +26,7 @@
 - Update security rules to allow write if familyAdmin or Account linked to Avatar
 - Send messages to other family members
 - Show loading indicator or null instead of brief broken image link
-- Extact custom AppBar / Dialog from Layout into custom component
+- Extact custom AppBar / Dialog from Layout into custom component, refactor Layout and AppBar state
 - Create email/password login form
 - Add configurable themes (fantasy, sci-fi, western...) with different images and text (Quests vs Bounties, Coins vs Credits, Treasure Chest vs Reward Cache etc.)
 - Disable buttons that cause server actions after they are used, until they disappear

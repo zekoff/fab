@@ -5,7 +5,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { AccountProvider } from './components/AccountContext';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -24,11 +23,9 @@ root.render(
   <React.StrictMode>
     <CssBaseline />
     <SnackbarProvider anchorOrigin={{ horizontal: "center", vertical: "top" }}>
-      <AccountProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </AccountProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </SnackbarProvider>
   </React.StrictMode>
 );

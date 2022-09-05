@@ -1,6 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { AccountContext } from "./components/AccountContext";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
 import AvatarInventory from "./components/AvatarInventory";
@@ -9,10 +8,10 @@ import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
 import FamilySummary from "./components/FamilySummary";
 import Layout from "./components/Layout";
-import { useAvatar, useAvatarList, useFamily, useGenericItemList, useInventory } from "./util/hooks";
+import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemList, useInventory } from "./util/hooks";
 
 function App() {
-  const account = useContext(AccountContext);
+  const account = useAccount();
   const family = useFamily(account);
   const [avatarId, setAvatarId] = useState(account?.avatarId);
   const avatar = useAvatar(family?.id, avatarId);
@@ -26,7 +25,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={
-        <Layout setAvatarId={setAvatarId} avatarList={avatarList} />
+        <Layout account={account} setAvatarId={setAvatarId} avatarList={avatarList} />
       }>
         <Route index element={
           <>
