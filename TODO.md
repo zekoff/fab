@@ -29,6 +29,7 @@
 - Create email/password login form
 - Add configurable themes (fantasy, sci-fi, western...) with different images and text (Quests vs Bounties, Coins vs Credits, Treasure Chest vs Reward Cache etc.)
 - Disable buttons that cause server actions after they are used, until they disappear
+- Improve snackbar component and share between all quest-related components (or, share with application overall if appropriate)
 
 ## Potential item tags
 

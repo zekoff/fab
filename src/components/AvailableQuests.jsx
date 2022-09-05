@@ -1,21 +1,30 @@
-import { Box, Button, Card, CardActions, CardContent, Divider, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, Divider, LinearProgress, Snackbar, Stack, Typography } from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { acceptQuest, deleteQuest } from "../util/firestoreWrite";
 import { useAvailableQuests } from "../util/hooks";
+import { useState } from "react";
 
 /**
  * Component that shows all available family quests, and allows an Avatar to
  * accept them.
- * @param {*} param0 
  * @returns the family available quest component, or loading bar if the family
  * state has not loaded yet
  */
 function AvailableQuests({ familyId, avatarId, sx }) {
   const availableQuests = useAvailableQuests(familyId);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   if (availableQuests === null || !avatarId) return <LinearProgress />;
   return (
     <Box sx={sx}>
+      <Snackbar
+        open={!!snackbarMessage}
+        autoHideDuration={3000}
+        onClose={() => {
+          setSnackbarMessage("");
+        }}
+        message={snackbarMessage}
+      />
       <Typography variant="h4">Available Quests</Typography>
       {availableQuests.length === 0 ?
         <Typography>There are no quests available.</Typography> :
@@ -33,7 +42,10 @@ function AvailableQuests({ familyId, avatarId, sx }) {
                 <Button
                   variant="contained"
                   startIcon={<AddCircleIcon />}
-                  onClick={() => acceptQuest(familyId, avatarId, quest)}
+                  onClick={() => {
+                    acceptQuest(familyId, avatarId, quest);
+                    setSnackbarMessage("Accepted quest.");
+                  }}
                 >
                   Accept Quest
                 </Button>
@@ -41,7 +53,10 @@ function AvailableQuests({ familyId, avatarId, sx }) {
                   variant="outlined"
                   color="error"
                   startIcon={<DeleteIcon />}
-                  onClick={() => deleteQuest(familyId, quest)}
+                  onClick={() => {
+                    deleteQuest(familyId, quest);
+                    setSnackbarMessage("Deleted quest.");
+                  }}
                 >
                   Delete Quest
                 </Button>
