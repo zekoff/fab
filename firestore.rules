@@ -45,6 +45,11 @@ service cloud.firestore {
                 allow read, write: if isFamilyMember(familyId);
             }
 
+            // Any family avatar can read/write recent achievements
+            match /recentAchievements/{document=**} {
+                allow read, write: if isFamilyMember(familyId);
+            }
+
         }
 
         // Read access to all generic items for any user

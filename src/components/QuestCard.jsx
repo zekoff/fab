@@ -10,7 +10,7 @@ import { Card, CardActions, CardContent, Divider, Stack, Typography } from "@mui
  */
 function QuestCard({ quest, buttons, sx }) {
   return (
-    <Card key={quest.id} sx={sx}>
+    <Card sx={{...sx, margin: 1}}>
       <CardContent>
         <Stack>
           <Typography variant="h5">{quest.name}</Typography>
@@ -22,7 +22,7 @@ function QuestCard({ quest, buttons, sx }) {
       <CardActions>
         {buttons.map(button => button)}
       </CardActions>
-    </Card>
+    </Card >
   )
 }
 

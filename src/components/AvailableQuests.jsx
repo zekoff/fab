@@ -32,14 +32,17 @@ function AvailableQuests({ familyId, avatarId, sx }) {
             enqueueSnackbar(`Deleted quest "${quest.name}".`, { variant: "error" });
           };
           return <QuestCard
+            key={quest.id}
             quest={quest}
             buttons={[
               <Button
+                key="accept-button"
                 variant="contained"
                 startIcon={<AddCircleIcon />}
                 onClick={acceptQuestHandler}
               >Accept Quest</Button>,
               <Button
+                key="delete-button"
                 variant="outlined"
                 color="error"
                 startIcon={<DeleteIcon />}

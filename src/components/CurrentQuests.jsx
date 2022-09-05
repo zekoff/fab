@@ -31,15 +31,18 @@ function CurrentQuests({ familyId, avatarId, sx }) {
             enqueueSnackbar(`Abandoned quest "${quest.name}.`, { variant: "error" });
           };
           return <QuestCard
+            key={quest.id}
             quest={quest}
             buttons={[
               <Button
+                key="complete-button"
                 variant="contained"
                 color="success"
                 startIcon={<CheckCircleIcon />}
                 onClick={completeQuestHandler}
               >Complete Quest</Button>,
               <Button
+                key="abandon-button"
                 variant="outlined"
                 color="error"
                 startIcon={<RemoveCircleIcon />}

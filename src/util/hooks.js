@@ -2,7 +2,7 @@ import { getAuth } from "firebase/auth";
 import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { Account, Avatar, Family, Item, Quest } from "./dataclasses";
+import { Account, Achievement, Avatar, Family, Item, Quest } from "./dataclasses";
 
 /**
  * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
@@ -255,7 +255,34 @@ function useImageFromStorage(imagePath) {
   return imageSrc;
 }
 
+/**
+ * Custom hook to get list of family's recent achievements.
+ * @param {*} familyId 
+ * @returns the list of Achievement objects, or null if familyId
+ * was null
+ */
+function useRecentAchievements(familyId) {
+  const defaultAchievementList = null;
+  const [achievementList, setAchievementList] = useState(defaultAchievementList);
+  useEffect(() => {
+    if (!familyId) {
+      setAchievementList(defaultAchievementList);
+      return;
+    }
+    const query = collection(getFirestore(), "families", familyId,
+      "recentAchievements").withConverter(Achievement.converter);
+    console.log(`Signing up for achievement updates on ${familyId}`);
+    return onSnapshot(
+      query,
+      queryResult => setAchievementList(queryResult.docs.map(doc => getDataobjectWithId(doc))),
+      queryResult => console.error(queryResult)
+    );
+  }, [familyId]);
+  return achievementList;
+}
+
 export {
   useUser, useAccount, useFamily, useAvatar, useAvatarList, useInventory,
-  useGenericItemList, useImageFromStorage, useCurrentQuests, useAvailableQuests
+  useGenericItemList, useImageFromStorage, useCurrentQuests, useAvailableQuests,
+  useRecentAchievements
 };

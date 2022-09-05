@@ -1,8 +1,5 @@
-import {
-  getFirestore, doc, setDoc, deleteDoc, addDoc, collection,
-  updateDoc, arrayUnion
-} from "firebase/firestore";
-import { Avatar, Quest } from "./dataclasses";
+import { addDoc, collection, deleteDoc, doc, getFirestore, setDoc } from "firebase/firestore";
+import { Achievement, Avatar, Quest, Reward } from "./dataclasses";
 
 function updateAvatar(familyId, avatar) {
   const ref = doc(getFirestore(), "families", familyId, "avatars", avatar.id)
@@ -37,13 +34,19 @@ function completeQuest(familyId, avatarId, quest) {
     avatarId, "currentQuests", quest.id);
   deleteDoc(currentQuest);
   console.log(`Deleted quest ID ${quest.id} from avatar quest list`);
-  // Add reward to avatar's "unclaimedRewards" array
-  const avatarDoc = doc(getFirestore(), "families", familyId, "avatars", avatarId);
-  updateDoc(avatarDoc, {
-    unclaimedRewards: arrayUnion(quest.reward)
-  });
-  console.log(`Added reward ${quest.reward} to avatar's unclaimed rewards`);
+  // Add reward to avatar's "unclaimedRewards" collections
+  const unclaimedRewards = collection(getFirestore(), "families", familyId, "avatars",
+    avatarId, "unclaimedRewards").withConverter(Reward.converter);
+  const rewardRef = addDoc(unclaimedRewards, quest.reward);
+  console.log(`Added reward ${rewardRef.id} to avatar's unclaimed rewards`);
   // Add summary of completed quest to family's recent achievements
+  const achievement = new Achievement();
+  achievement.avatar = avatarId;
+  achievement.description = `${avatarId} completed the quest "${quest.name}"!`;
+  const recentAchievements = collection(getFirestore(), "families", familyId,
+    "recentAchievements").withConverter(Achievement.converter);
+  addDoc(recentAchievements, achievement);
+  console.log(`Added new achievement ${achievement}`);
 }
 
 function abandonQuest(familyId, avatarId, quest) {

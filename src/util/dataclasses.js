@@ -89,13 +89,22 @@ class Quest {
 }
 
 /**
- * Dataclass for rewards. Rewards are stored as generic objects as fields of
- * some other document in Firestore.
+ * Dataclass for FAB Firestore Rewards.
  */
 class Reward {
+  id; // ID string set by Firestore (if pulled from data)
   xp = 20;
   coins = 100;
   items = []; // list of 0..n Item IDs
+
+  static converter = makeConverter(Reward);
+
+  static fromObject({ xp = 20, coins = 100, items = [] }) {
+    const reward = new Reward();
+    reward.xp = xp;
+    reward.coins = coins;
+    reward.items = items;
+  }
 
   toString() {
     return `${this.xp} XP, ${this.coins} coins, and ${this.items.length} items`;
@@ -103,14 +112,20 @@ class Reward {
 }
 
 /**
- * Dataclass for an achievement to display. Achivements are stored as generic
- * objects as fields of some other document in Firestore.
+ * Dataclass for a FAB Firestore Achievement to display.
  */
 class Achievement {
+  id; // ID string set by Firestore
   timestamp = 0; // seconds since epoch
   avatar; // the person who accomplished this
   description = "Something the family can be proud of!";
   image;
+
+  static converter = makeConverter(Achievement);
+
+  toString() {
+    return this.description;
+  }
 }
 
 export { Account, Avatar, Family, Item, Quest, Reward, Achievement };
