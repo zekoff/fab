@@ -1,6 +1,6 @@
 import { List, Typography } from "@mui/material";
 import { Item } from "../util/dataclasses";
-import ItemDisplay from "./ItemDisplay";
+import ItemDetails from "./ItemDetails";
 
 function populateInventoryList(inventory, itemList) {
   return inventory.map(itemId => {
@@ -16,7 +16,7 @@ function AvatarInventory({ inventory, itemList }) {
         {
           inventory && itemList ?
             populateInventoryList(inventory, itemList).map(
-              item => <ItemDisplay key={item.id} item={item} />
+              item => <ItemDetails key={item.id} item={item} />
             ) : null
         }
       </List>

@@ -6,11 +6,11 @@
 - Component to receive rewards and open treasure boxes (add to Avatar screen)
 - Shop component
 - Add fanfare/juice for level-ups and opening treasure boxes
-- Add summary of completed quest to recent family achievements
 - Add avatar name and image to AppBar
 - Allow direct addition of a family achievement
-- BUG: unclaimed rewards equivalent to one already in the avatar unclaimed reward list are not added. (Change to Firestore collection? Add timestamp?)
-- Consider changing recent family achievements to a collection.
+- Improve achievement recording and display
+- Component to show available images from Storage
+- Component to show available Items, populated with images
 
 ## Backlog
 
@@ -31,6 +31,7 @@
 - Add configurable themes (fantasy, sci-fi, western...) with different images and text (Quests vs Bounties, Coins vs Credits, Treasure Chest vs Reward Cache etc.)
 - Disable buttons that cause server actions after they are used, until they disappear
 - Add a display-only screen for family status and recent achievements (kiosk mode)
+- Add filtering/searching for inventory list
 
 ## Potential item tags
 
