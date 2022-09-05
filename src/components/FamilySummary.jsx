@@ -1,15 +1,12 @@
 import { Box, LinearProgress, Stack, Typography } from "@mui/material";
 import { updateAvatar } from "../util/firestoreWrite";
-import { useAvatarList, useFamily } from "../util/hooks";
 import AvatarSummary from "./AvatarSummary";
 
 /**
  * Shows information about Family of signed-in user.
  */
-function FamilySummary({ account }) {
-  const family = useFamily(account);
-  const avatarList = useAvatarList(account);
-  if (![account, family, avatarList].every(Boolean)) return <LinearProgress />;
+function FamilySummary({ family, avatarList }) {
+  if (![family, avatarList].every(Boolean)) return <LinearProgress />;
   function testAvatarUpdate(family, avatar) {
     const n = Math.ceil(Math.random() * 8);
     const image = `heroes/oryx_16bit_fantasy_creatures_0${n}.png`;

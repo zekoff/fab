@@ -28,7 +28,7 @@ function CreateQuest({ familyId, sx }) {
     quest.description = questDescription;
     quest.reward = questReward;
     addQuest(familyId, quest);
-    enqueueSnackbar("Added new quest.");
+    enqueueSnackbar(`Created new quest "${quest.name}".`, { variant: "info" });
     setQuestName("");
     setQuestDescription("");
     setQuestReward(new Reward());
@@ -46,8 +46,7 @@ function CreateQuest({ familyId, sx }) {
           onChange={event => {
             setQuestName(event.target.value);
             setQuestNameError("");
-          }}
-        />
+          }} />
         <TextField
           id="quest-description-field"
           label="Quest Description"
@@ -58,16 +57,13 @@ function CreateQuest({ familyId, sx }) {
           onChange={event => {
             setQuestDescription(event.target.value);
             setQuestDescriptionError("");
-          }}
-        />
+          }} />
         <Typography variant="body">Reward: {questReward.toString()}</Typography>
         <Button
           variant="contained"
           onClick={handleSubmit}
           startIcon={<CreateIcon />}
-        >
-          Create Quest
-        </Button>
+        >Create Quest</Button>
       </Stack>
     </Box>
   )

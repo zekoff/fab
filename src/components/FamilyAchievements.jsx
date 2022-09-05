@@ -1,8 +1,6 @@
 import { LinearProgress, List, ListItem, ListItemText, Typography } from "@mui/material";
-import { useFamily } from "../util/hooks";
 
-function FamilyAchievements({ account }) {
-  const family = useFamily(account);
+function FamilyAchievements({ family }) {
   if (!family) return <LinearProgress />
   return (
     <>

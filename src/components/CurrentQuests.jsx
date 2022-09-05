@@ -1,9 +1,10 @@
-import { Box, Button, Card, CardActions, CardContent, Divider, LinearProgress, Stack, Typography } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
+import { useSnackbar } from "notistack";
 import { abandonQuest, completeQuest } from "../util/firestoreWrite";
 import { useCurrentQuests } from "../util/hooks";
-import { useSnackbar } from "notistack";
+import QuestCard from "./QuestCard";
 
 /**
  * Component to show avatar's current (accepted) quests. If user is a family
@@ -16,48 +17,40 @@ function CurrentQuests({ familyId, avatarId, sx }) {
   if (currentQuests === null) return <LinearProgress />
   return (<Box sx={sx}>
     <Typography variant="h4">Current Quests</Typography>
+
     {currentQuests.length === 0 ?
       <Typography>You haven't accepted any quests.</Typography> :
       <Stack>
         {currentQuests.map(quest => {
-          return (<Card key={quest.id}>
-            <CardContent>
-              <Typography variant="h5">{quest.name}</Typography>
-              <Divider />
-              <Typography variant="body">{quest.description}</Typography>
-              <br />
-              <Typography variant="caption">Reward: {"[NYI]"}</Typography>
-            </CardContent>
-            <CardActions>
+          const completeQuestHandler = () => {
+            completeQuest(familyId, avatarId, quest);
+            enqueueSnackbar(`Completed quest "${quest.name}".`, { variant: "success" });
+          };
+          const abandonQuestHandler = () => {
+            abandonQuest(familyId, avatarId, quest);
+            enqueueSnackbar(`Abandoned quest "${quest.name}.`, { variant: "error" });
+          };
+          return <QuestCard
+            quest={quest}
+            buttons={[
               <Button
                 variant="contained"
                 color="success"
                 startIcon={<CheckCircleIcon />}
-                onClick={() => {
-                  completeQuest(familyId, avatarId, quest);
-                  enqueueSnackbar("Completed quest.");
-                }}
-              >
-                Complete Quest
-              </Button>
+                onClick={completeQuestHandler}
+              >Complete Quest</Button>,
               <Button
                 variant="outlined"
                 color="error"
                 startIcon={<RemoveCircleIcon />}
-                onClick={() => {
-                  abandonQuest(familyId, avatarId, quest);
-                  enqueueSnackbar("Abandoned quest.");
-                }}
-              >
-                Abandon Quest
-              </Button>
-            </CardActions>
-          </Card>)
+                onClick={abandonQuestHandler}
+              >Abandon Quest</Button>
+            ]}
+          />
         })}
       </Stack>
     }
-  </Box>
-  );
+  </Box>);
 }
 
 export default CurrentQuests;

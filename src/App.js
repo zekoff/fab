@@ -25,11 +25,13 @@ function App() {
   }, [account, avatarId]);
   return (
     <Routes>
-      <Route path="/" element={<Layout setAvatarId={setAvatarId} avatarList={avatarList} />}>
+      <Route path="/" element={
+        <Layout setAvatarId={setAvatarId} avatarList={avatarList} />
+      }>
         <Route index element={
           <>
-            <FamilyAchievements account={account} />
-            <FamilySummary account={account} />
+            <FamilyAchievements family={family} />
+            <FamilySummary family={family} avatarList={avatarList} />
           </>
         } />
         <Route path="avatar" element={
