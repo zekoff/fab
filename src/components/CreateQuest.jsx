@@ -3,6 +3,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import { useState } from "react";
 import { Quest, Reward } from "../util/dataclasses";
 import { addQuest } from "../util/firestoreWrite";
+import { useSnackbar } from "notistack";
 
 function CreateQuest({ familyId, sx }) {
   const [questName, setQuestName] = useState("");
@@ -10,18 +11,24 @@ function CreateQuest({ familyId, sx }) {
   const [questDescription, setQuestDescription] = useState("");
   const [questDescriptionError, setQuestDescriptionError] = useState("");
   const [questReward, setQuestReward] = useState(new Reward());
+  const { enqueueSnackbar } = useSnackbar();
   function handleSubmit() {
-    if (!questName)
+    let error = false;
+    if (!questName) {
       setQuestNameError("Enter a name for the quest.");
-    if (!questDescription)
+      error = true;
+    }
+    if (!questDescription) {
       setQuestDescriptionError("Enter a description for the quest.");
-    if (questNameError || questDescriptionError) return;
+      error = true;
+    }
+    if (error) return;
     const quest = new Quest();
     quest.name = questName;
     quest.description = questDescription;
     quest.reward = questReward;
     addQuest(familyId, quest);
-    console.log("Submitted quest form");
+    enqueueSnackbar("Added new quest.");
     setQuestName("");
     setQuestDescription("");
     setQuestReward(new Reward());

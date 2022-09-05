@@ -9,7 +9,8 @@
 - Add summary of completed quest to recent family achievements
 - Add avatar name and image to AppBar
 - Allow direct addition of a family achievement
-- Add toast or similar feedback when quest is created, completed, abandoned, etc.
+- BUG: unclaimed rewards equivalent to one already in the avatar unclaimed reward list are not added. (Change to Firestore collection? Add timestamp?)
+- Consier changing recent family achievements to a collection.
 
 ## Backlog
 
@@ -29,7 +30,6 @@
 - Create email/password login form
 - Add configurable themes (fantasy, sci-fi, western...) with different images and text (Quests vs Bounties, Coins vs Credits, Treasure Chest vs Reward Cache etc.)
 - Disable buttons that cause server actions after they are used, until they disappear
-- Improve snackbar component and share between all quest-related components (or, share with application overall if appropriate)
 
 ## Potential item tags
 

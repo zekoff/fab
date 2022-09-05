@@ -3,6 +3,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { abandonQuest, completeQuest } from "../util/firestoreWrite";
 import { useCurrentQuests } from "../util/hooks";
+import { useSnackbar } from "notistack";
 
 /**
  * Component to show avatar's current (accepted) quests. If user is a family
@@ -11,6 +12,7 @@ import { useCurrentQuests } from "../util/hooks";
  */
 function CurrentQuests({ familyId, avatarId, sx }) {
   const currentQuests = useCurrentQuests(familyId, avatarId);
+  const { enqueueSnackbar } = useSnackbar();
   if (currentQuests === null) return <LinearProgress />
   return (<Box sx={sx}>
     <Typography variant="h4">Current Quests</Typography>
@@ -31,7 +33,10 @@ function CurrentQuests({ familyId, avatarId, sx }) {
                 variant="contained"
                 color="success"
                 startIcon={<CheckCircleIcon />}
-                onClick={() => completeQuest(familyId, avatarId, quest)}
+                onClick={() => {
+                  completeQuest(familyId, avatarId, quest);
+                  enqueueSnackbar("Completed quest.");
+                }}
               >
                 Complete Quest
               </Button>
@@ -39,7 +44,10 @@ function CurrentQuests({ familyId, avatarId, sx }) {
                 variant="outlined"
                 color="error"
                 startIcon={<RemoveCircleIcon />}
-                onClick={() => abandonQuest(familyId, avatarId, quest)}
+                onClick={() => {
+                  abandonQuest(familyId, avatarId, quest);
+                  enqueueSnackbar("Abandoned quest.");
+                }}
               >
                 Abandon Quest
               </Button>
