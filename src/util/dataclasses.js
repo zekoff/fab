@@ -104,6 +104,7 @@ class Reward {
     reward.xp = xp;
     reward.coins = coins;
     reward.items = items;
+    return reward;
   }
 
   toString() {

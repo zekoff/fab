@@ -1,8 +1,7 @@
 # TODO
 
-- Component to send Treasure to another Avatar (coins/items only)
 - Component to create Reward
-- Component to send Reward (includes component to create Reward)
+- Component to attache Reward to Quest (includes component to create Reward)
 - Component to receive rewards and open treasure boxes (add to Avatar screen)
 - Shop component
 - Add fanfare/juice for level-ups and opening treasure boxes
@@ -20,6 +19,7 @@
 - If user is not logged in, redirect UI to sign-in page
 - Build account creation screens
 - Implement one-time sign-up codes for family admins to extend invitations
+- Component to send Treasure to another Avatar (coins/items only)
 - Allow family admins to delete avatars
 - Data validation for inputs (created quests, etc.)
 - Include Family-specific Item definitions in addition to FAB-wide definitions

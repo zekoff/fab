@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Quest, Reward } from "../util/dataclasses";
 import { addQuest } from "../util/firestoreWrite";
 import { useSnackbar } from "notistack";
+import CreateReward from "./CreateReward";
 
 function CreateQuest({ familyId, sx }) {
   const [questName, setQuestName] = useState("");
@@ -59,10 +60,12 @@ function CreateQuest({ familyId, sx }) {
             setQuestDescriptionError("");
           }} />
         <Typography variant="body">Reward: {questReward.toString()}</Typography>
+        <CreateReward rewardCallback={setQuestReward} />
         <Button
           variant="contained"
           onClick={handleSubmit}
           startIcon={<CreateIcon />}
+          sx={{ mt: 1 }}
         >Create Quest</Button>
       </Stack>
     </Box>
