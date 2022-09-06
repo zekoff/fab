@@ -42,7 +42,7 @@ function completeQuest(familyId, avatarId, quest) {
   // Add summary of completed quest to family's recent achievements
   const achievement = new Achievement();
   achievement.avatar = avatarId;
-  achievement.description = `${avatarId} completed the quest "${quest.name}"!`;
+  achievement.description = `Completed the quest "${quest.name}"!`;
   const recentAchievements = collection(getFirestore(), "families", familyId,
     "recentAchievements").withConverter(Achievement.converter);
   addDoc(recentAchievements, achievement);

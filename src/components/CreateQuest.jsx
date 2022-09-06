@@ -40,6 +40,7 @@ function CreateQuest({ familyId, sx }) {
         <TextField
           id="quest-name-field"
           label="Quest Name"
+          autoComplete="off"
           error={!!questNameError}
           helperText={questNameError}
           value={questName}
@@ -50,6 +51,7 @@ function CreateQuest({ familyId, sx }) {
         <TextField
           id="quest-description-field"
           label="Quest Description"
+          autoComplete="off"
           error={!!questDescriptionError}
           helperText={questDescriptionError}
           multiline

@@ -1,8 +1,8 @@
 import { getAuth } from "firebase/auth";
-import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDocFromCache, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { Account, Achievement, Avatar, Family, Item, Quest } from "./dataclasses";
+import { Account, Achievement, Avatar, Family, Item, Quest, Reward } from "./dataclasses";
 
 /**
  * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
@@ -161,6 +161,32 @@ function useInventory(familyId, avatarId) {
 }
 
 /**
+ * Custom hook to sign up for a synced list of any unclaimed rewards the avatar has.
+ * @param {*} familyId 
+ * @param {*} avatarId 
+ * @returns 
+ */
+function useUnclaimedRewards(familyId, avatarId) {
+  const defaultUnclaimedRewards = null;
+  const [unclaimedRewards, setUnclaimedRewards] = useState(defaultUnclaimedRewards);
+  useEffect(() => {
+    if (!familyId || !avatarId) {
+      setUnclaimedRewards(defaultUnclaimedRewards);
+      return;
+    }
+    const query = collection(getFirestore(), "families", familyId, "avatars", avatarId,
+      "unclaimedRewards").withConverter(Reward.converter);
+    console.log(`Signing up for unclaimed rewards on avatar ${avatarId}`);
+    return onSnapshot(
+      query,
+      queryResult => setUnclaimedRewards(queryResult.docs.map(doc => getDataobjectWithId(doc))),
+      queryResult => console.error(queryResult)
+    );
+  }, [familyId, avatarId]);
+  return unclaimedRewards;
+}
+
+/**
  * Custom hook to get the list of current Quests for an avatar.
  * @param {*} familyId the Firestore ID of the family
  * @param {*} avatarId Firestore ID of the avatar
@@ -284,5 +310,5 @@ function useRecentAchievements(familyId) {
 export {
   useUser, useAccount, useFamily, useAvatar, useAvatarList, useInventory,
   useGenericItemList, useImageFromStorage, useCurrentQuests, useAvailableQuests,
-  useRecentAchievements
+  useRecentAchievements, useUnclaimedRewards
 };
