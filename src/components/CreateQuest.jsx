@@ -32,7 +32,6 @@ function CreateQuest({ familyId, sx }) {
     enqueueSnackbar(`Created new quest "${quest.name}".`, { variant: "info" });
     setQuestName("");
     setQuestDescription("");
-    setQuestReward(new Reward());
   }
   return (
     <Box sx={sx}>

@@ -1,6 +1,7 @@
 import { Box, Input, Slider, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import { Reward } from "../util/dataclasses";
+import BrowseItems from "./BrowseItems";
 
 const XP_DEFAULT = 20;
 const XP_STEP = 5;
@@ -9,7 +10,7 @@ const COINS_DEFAULT = 100;
 const COINS_STEP = 10;
 const COINS_MAX = 1500;
 
-function CreateReward({ rewardCallback }) {
+function CreateReward({ includeItems, rewardCallback }) {
   const [xpAmount, setXpAmount] = useState(XP_DEFAULT);
   const [coinsAmount, setCoinsAmount] = useState(COINS_DEFAULT);
   const [items, setItems] = useState([]);
@@ -69,6 +70,14 @@ function CreateReward({ rewardCallback }) {
           inputProps={{ step: COINS_STEP, min: 0, max: COINS_MAX, type: 'number' }} />
       </Stack>
     </Box>
+    {includeItems ? <BrowseItems selectedItemCallback={(item) => {
+      console.log(item);
+      setItems(items => {
+        items.push(item.id);
+        rewardCallback(Reward.fromObject({ xp: xpAmount, coins: coinsAmount, items: items }));
+        return items;
+      });
+    }} /> : null}
   </>)
 }
 

@@ -6,10 +6,10 @@ import { useImageFromStorage } from "../util/hooks";
 
 const IMG_SIZE = 36;
 
-function ItemDetails({ item }) {
+function ItemDetails({ item, sx }) {
   const [showDetail, setShowDetail] = useState(false);
   const imageSrc = useImageFromStorage(item.image);
-  return <Paper onClick={() => setShowDetail(!showDetail)} sx={{ m: 1, p: 1 }}
+  return <Paper onClick={() => setShowDetail(!showDetail)} sx={sx}
     component={Stack} direction="column">
     <Stack direction={"row"} alignItems="center">
       <Box component="img" src={imageSrc}

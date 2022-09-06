@@ -108,7 +108,12 @@ class Reward {
   }
 
   toString() {
-    return `${this.xp} XP, ${this.coins} coins, and ${this.items.length} items`;
+    const infoList = [];
+    if (this.xp) infoList.push(`${this.xp} XP`);
+    if (this.coins) infoList.push(`${this.coins} coins`);
+    if (this.items.length > 0)
+      infoList.push(`${this.items.length} item${this.items.length === 1 ? '' : 's'}`)
+    return infoList.join(", ");
   }
 }
 

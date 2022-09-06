@@ -1,19 +1,22 @@
 # TODO
 
-- Component to create Reward
-- Component to attache Reward to Quest (includes component to create Reward)
 - Component to receive rewards and open treasure boxes (add to Avatar screen)
 - Shop component
-- Add fanfare/juice for level-ups and opening treasure boxes
+- Add fanfare/juice for level-ups and opening treasure boxes. Show coins going into a piggy bank.
 - Add avatar name and image to AppBar
 - Allow direct addition of a family achievement
 - Improve achievement recording and display
 - Component to show available images from Storage
 - Component to show available Items, populated with images
+- Refactor hooks that use nested Firestore data so that all data populates completely before returning
+- Perform state null checking outside components, so that components can assume their props are populated
+- Component to allow user to set their avatar image
 
 ## Backlog
 
 - Implement item tag options as enum-like
+- Add back in ability to add item(s) as Quest Rewards
+- Refactor CreateQuest and CreateReward for better integration with item browser and reward creation in general. When selecting item for quest creation, consider using Dialog
 - Add toggle to account menu to show screens as if a non-admin is logged in
 - Disable create quest and certain quest buttons if not family admin
 - If user is not logged in, redirect UI to sign-in page

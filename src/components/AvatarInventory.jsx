@@ -16,7 +16,7 @@ function AvatarInventory({ inventory, itemList }) {
         {
           inventory && itemList ?
             populateInventoryList(inventory, itemList).map(
-              item => <ItemDetails key={item.id} item={item} />
+              item => <ItemDetails key={item.id} item={item} sx={{ m: 1, p: 1 }} />
             ) : null
         }
       </List>
