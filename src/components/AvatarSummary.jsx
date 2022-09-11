@@ -1,13 +1,11 @@
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
-import { useImageFromStorage } from "../util/hooks";
 
-function AvatarSummary({ family, avatar, testAvatarUpdateFunction }) {
-  const avatarImage = useImageFromStorage(avatar.image);
+function AvatarSummary({ avatar, testAvatarUpdateFunction }) {
   return (
     <Paper>
       <Grid container padding={2} spacing={10} alignItems={"center"} justifyContent="space-evenly">
         <Grid item xs={2}>
-          <Avatar alt={avatar.name} src={avatarImage} variant="square" />
+          <Avatar alt={avatar.name} src={avatar.getImageUrl()} variant="square" />
         </Grid>
         <Grid item xs={4}>
           <Typography>{avatar.name}</Typography>
@@ -20,7 +18,7 @@ function AvatarSummary({ family, avatar, testAvatarUpdateFunction }) {
             avatar.coins = Math.floor(Math.random() * 100);
             avatar.level = Math.ceil(Math.random() * 10);
             console.log(avatar);
-            testAvatarUpdateFunction(family, avatar);
+            testAvatarUpdateFunction(avatar);
           }}>Test Avatar</Button>
         </Grid>
       </Grid>

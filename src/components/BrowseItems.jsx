@@ -1,5 +1,5 @@
 import { Box, Button, LinearProgress, List, ListItem, Typography } from "@mui/material";
-import { useGenericItemList } from "../util/hooks";
+import { useGenericItemDefinitions, useGenericItemList } from "../util/hooks";
 import ItemDetails from "./ItemDetails";
 
 /**
@@ -11,7 +11,7 @@ import ItemDetails from "./ItemDetails";
  * @returns the item selection component
  */
 function BrowseItems({ selectedItemCallback }) {
-  const items = useGenericItemList();
+  const items = useGenericItemDefinitions();
   if (!items) return <LinearProgress />;
   return (
     <Box>

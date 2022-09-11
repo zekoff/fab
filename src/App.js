@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
@@ -8,42 +9,40 @@ import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
 import FamilySummary from "./components/FamilySummary";
 import Layout from "./components/Layout";
-import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemList, useInventory } from "./util/hooks";
+import { useAccount, useAvatar, useFamily, useGenericItemDefinitions } from "./util/hooks";
 
 function App() {
   const account = useAccount();
-  const family = useFamily(account);
-  const [avatarId, setAvatarId] = useState(account?.avatarId);
-  const avatar = useAvatar(family?.id, avatarId);
-  const avatarList = useAvatarList(account);
-  const inventory = useInventory(family?.id, avatarId);
-  const itemList = useGenericItemList();
-  useEffect(() => {
-    // Set avatar to user's primary avatar after first logging in
-    if (account?.avatarId && !avatarId) setAvatarId(account.avatarId); else return;
-  }, [account, avatarId]);
+  console.log(account);
+  const family = useFamily(account?.familyFirestoreId);
+  console.log(family);
+  const avatar = useAvatar(account?.avatarFirestoreId);
+  console.log(avatar);
+  const itemDefinitions = useGenericItemDefinitions();
+  const setAvatar = () => {}; // NYI
+  if (![account, family, avatar, itemDefinitions].every(Boolean)) return <CircularProgress />
   return (
     <Routes>
       <Route path="/" element={
-        <Layout account={account} setAvatarId={setAvatarId} avatarList={avatarList} />
+        <Layout account={account} avatar={avatar} setAvatar={setAvatar} />
       }>
         <Route index element={
           <>
             <FamilyAchievements family={family} />
-            <FamilySummary family={family} avatarList={avatarList} />
+            <FamilySummary family={family} />
           </>
         } />
         <Route path="avatar" element={
           <>
             <AvatarDetails avatar={avatar} />
-            <AvatarInventory inventory={inventory} itemList={itemList} />
+            <AvatarInventory avatar={avatar} />
           </>
         } />
         <Route path="quests" element={
           <>
-            <CurrentQuests familyId={family?.id} avatarId={avatarId} sx={{ marginBottom: 2 }} />
-            <AvailableQuests familyId={family?.id} avatarId={avatarId} sx={{ marginBottom: 2 }} />
-            <CreateQuest familyId={family?.id} />
+            {/* <CurrentQuests avatar={avatar} sx={{ marginBottom: 2 }} />
+            <AvailableQuests family={family} sx={{ marginBottom: 2 }} />
+            <CreateQuest family={family} /> */}
           </>
         } />
       </Route>

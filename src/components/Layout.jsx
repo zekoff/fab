@@ -12,7 +12,7 @@ import "../index.css";
 import { useUser } from '../util/hooks';
 import UserButton from "./UserButton";
 
-function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvatarId }) {
+function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvatar }) {
   return (
     <Dialog onClose={handleDialogClose} open={dialogOpen}>
       <DialogTitle>Switch to Avatar:</DialogTitle>
@@ -23,7 +23,7 @@ function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvat
             button
             onClick={() => {
               handleDialogClose();
-              setAvatarId(avatar.id);
+              setAvatar(avatar);
             }}
           >
             <ListItemText primary={avatar.name} />
@@ -37,8 +37,9 @@ function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvat
 /**
  * Defines top-level layout for UI, including Router Outlet for subcomponents.
  */
-function Layout({ account, setAvatarId, avatarList }) {
+function Layout({ account, avatar, setAvatar }) {
   const user = useUser();
+  const avatarList = []; // NYI
   const [dialogOpen, setDialogOpen] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const handleMenu = event => setMenuAnchorEl(event.currentTarget);
@@ -48,7 +49,7 @@ function Layout({ account, setAvatarId, avatarList }) {
       dialogOpen={dialogOpen}
       avatarList={avatarList}
       handleDialogClose={() => setDialogOpen(false)}
-      setAvatarId={setAvatarId}
+      setAvatar={setAvatar}
     />
     <AppBar position="sticky" sx={{ mb: 2 }}>
       <Toolbar>

@@ -15,17 +15,17 @@ function addQuest(familyId, quest) {
   console.log(`Added quest with ID ${docRef.id} to family available quests`);
 }
 
-function acceptQuest(familyId, avatarId, quest) {
+function acceptQuest(family, avatar, quest) {
   // Remove quest document from family's "availableQuests" collection
-  const availableQuest = doc(getFirestore(), "families", familyId,
-    "availableQuests", quest.id);
-  deleteDoc(availableQuest);
-  console.log(`Deleted quest ID ${quest.id} from family available quests`);
-  // Add quest document to avatar's "currentQuests" collection
-  const currentQuests = collection(getFirestore(), "families", familyId, "avatars",
-    avatarId, "currentQuests").withConverter(Quest.converter);
-  const docRef = addDoc(currentQuests, quest);
-  console.log(`Added quest ID ${docRef.id} to avatar quests`);
+  // const availableQuest = doc(getFirestore(), "families", familyId,
+  //   "availableQuests", quest.id);
+  // deleteDoc(availableQuest);
+  // console.log(`Deleted quest ID ${quest.id} from family available quests`);
+  // // Add quest document to avatar's "currentQuests" collection
+  // const currentQuests = collection(getFirestore(), "families", familyId, "avatars",
+  //   avatarId, "currentQuests").withConverter(Quest.converter);
+  // const docRef = addDoc(currentQuests, quest);
+  // console.log(`Added quest ID ${docRef.id} to avatar quests`);
 }
 
 function completeQuest(familyId, avatarId, quest) {

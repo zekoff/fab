@@ -2,17 +2,15 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import { useImageFromStorage } from "../util/hooks";
 
 const IMG_SIZE = 36;
 
 function ItemDetails({ item, sx }) {
   const [showDetail, setShowDetail] = useState(false);
-  const imageSrc = useImageFromStorage(item.image);
   return <Paper onClick={() => setShowDetail(!showDetail)} sx={sx}
     component={Stack} direction="column">
     <Stack direction={"row"} alignItems="center">
-      <Box component="img" src={imageSrc}
+      <Box component="img" src={item.getImageUrl()}
         sx={{ width: IMG_SIZE, height: IMG_SIZE, flexGrow: 0, mr: 1 }} />
       <Typography sx={{ flexGrow: 1 }}>{item.name}</Typography>
       {showDetail ?

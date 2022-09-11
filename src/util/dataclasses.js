@@ -1,5 +1,5 @@
 import { getDownloadURL, getStorage } from "firebase/storage";
-import { v4 as generateUuid } from uuid;
+import { v4 as generateUuid } from "uuid";
 
 /**
  * Creates a Firestore converter object that can be used by a FAB dataclass. Given a dataclass
@@ -21,7 +21,6 @@ function makeConverter(targetClass) {
       const data = doc.data(options);
       const dataobject = new targetClass();
       Object.keys(data).forEach(key => dataobject[key] = data[key]);
-      dataobject.firestoreId = doc.id;
       return dataobject;
     }
   }
@@ -36,20 +35,7 @@ class Account {
   familyAdmin; // boolean
   familyFirestoreId; // string
 
-  static converter = {
-    toFirestore: (dataobject) => {
-      const objectToSend = structuredClone(dataobject);
-      delete objectToSend.firestoreId;
-      return objectToSend;
-    },
-    fromFirestore: (doc, options) => {
-      const data = doc.data(options);
-      const dataobject = new targetClass();
-      Object.keys(data).forEach(key => dataobject[key] = data[key]);
-      dataobject.firestoreId = doc.id;
-      return dataobject;
-    }
-  };
+  static converter = makeConverter(Account);
 }
 
 /**
@@ -81,7 +67,7 @@ class Family {
       return objectToSend;
     },
     fromFirestore: function (doc, options) {
-      return createFromFirestoreDoc(doc);
+      return Family.createFromFirestoreDoc(doc);
     }
   }
 
@@ -93,7 +79,6 @@ class Family {
    */
   static createFromFirestoreDoc(doc) {
     const family = new Family();
-    family.firestoreId = doc.id;
     const data = doc.data();
     ["name", "theme", "avatarFirestoreIds", "image"].forEach(
       field => family[field] = data[field]);
@@ -195,18 +180,17 @@ class Avatar {
 
   static converter = {
     toFirestore: function (avatar) {
-      const objectToSend = structuredClone(dataobject);
+      const objectToSend = structuredClone(avatar);
       delete objectToSend.firestoreId; // no impact on items without ID attributes
       return objectToSend;
     },
     fromFirestore: function (doc, options) {
-      return createFromFirestoreDoc(doc);
+      return Avatar.createFromFirestoreDoc(doc);
     }
   }
 
   static createFromFirestoreDoc(doc) {
     const avatar = new Avatar();
-    avatar.firestoreId = doc.id;
     const data = doc.data();
     ["accountFirestoreId", "familyFirestoreId", "name", "level", "xp", "coins", "image"].forEach(
       field => avatar[field] = data[field]);

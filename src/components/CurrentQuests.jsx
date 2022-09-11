@@ -11,10 +11,9 @@ import QuestCard from "./QuestCard";
  * admin, allow the quests to be marked completed.
  * @param {*} props 
  */
-function CurrentQuests({ familyId, avatarId, sx }) {
-  const currentQuests = useCurrentQuests(familyId, avatarId);
+function CurrentQuests({ family, avatar, sx }) {
   const { enqueueSnackbar } = useSnackbar();
-  if (currentQuests === null) return <LinearProgress />
+  const currentQuests = avatar.currentQuests;
   return (<Box sx={sx}>
     <Typography variant="h4">Current Quests</Typography>
 
@@ -23,11 +22,11 @@ function CurrentQuests({ familyId, avatarId, sx }) {
       <Stack>
         {currentQuests.map(quest => {
           const completeQuestHandler = () => {
-            completeQuest(familyId, avatarId, quest);
+            completeQuest(family, avatar, quest);
             enqueueSnackbar(`Completed quest "${quest.name}".`, { variant: "success" });
           };
           const abandonQuestHandler = () => {
-            abandonQuest(familyId, avatarId, quest);
+            abandonQuest(family, avatar, quest);
             enqueueSnackbar(`Abandoned quest "${quest.name}.`, { variant: "error" });
           };
           return <QuestCard
