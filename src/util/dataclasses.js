@@ -1,4 +1,3 @@
-import { getDownloadURL, getStorage } from "firebase/storage";
 import { v4 as generateUuid } from "uuid";
 
 /**
@@ -49,16 +48,6 @@ class Family {
   availableQuests = []; // list of 0..n Quest objects
   recentAchievements = []; // list of 0..n Achievement objects
   image; // location of image in Firebase Storage
-  #imageUrl;
-
-  async getImageUrl() {
-    if (this.#imageUrl) return this.#imageUrl;
-    if (this.image) {
-      this.#imageUrl = await getDownloadURL(getStorage(), this.image);
-      return this.#imageUrl;
-    }
-    return null;
-  }
 
   static converter = {
     toFirestore: function (familyObject) {
@@ -102,18 +91,8 @@ class ItemDefinition {
   tags = []; // list of 0..n item tags
   theme = "fantasy";
   image; // location of the image in Firebase Storage
-  #imageUrl;
 
   static converter = makeConverter(ItemDefinition);
-
-  async getImageUrl() {
-    if (this.#imageUrl) return this.#imageUrl;
-    if (this.image) {
-      this.#imageUrl = await getDownloadURL(getStorage(), this.image);
-      return this.#imageUrl;
-    }
-    return null;
-  }
 
   makeItem() {
     const item = Item();
@@ -133,16 +112,6 @@ class Item {
   value = 100;
   tags = []; // list of 0..n item tags
   image; // location of the image in Firebase Storage
-  #imageUrl;
-
-  async getImageUrl() {
-    if (this.#imageUrl) return this.#imageUrl;
-    if (this.image) {
-      this.#imageUrl = await getDownloadURL(getStorage(), this.image);
-      return this.#imageUrl;
-    }
-    return null;
-  }
 
   static createFromData(data) {
     const item = new Item();
@@ -167,16 +136,6 @@ class Avatar {
   unclaimedRewards = []; // list of 0..n Reward objects
   currentQuests = []; // list of 0..n Quest objects
   image; // location of the image in Firebase Storage
-  #imageUrl;
-
-  async getImageUrl() {
-    if (this.#imageUrl) return this.#imageUrl;
-    if (this.image) {
-      this.#imageUrl = await getDownloadURL(getStorage(), this.image);
-      return this.#imageUrl;
-    }
-    return null;
-  }
 
   static converter = {
     toFirestore: function (avatar) {
