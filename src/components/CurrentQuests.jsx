@@ -1,9 +1,9 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { abandonQuest, completeQuest } from "../util/firestoreWrite";
-import { useCurrentQuests } from "../util/hooks";
+import { Achievement } from '../util/firestoreClasses';
+import { updateAvatar, updateFamily } from "../util/firestoreWrite";
 import QuestCard from "./QuestCard";
 
 /**
@@ -11,27 +11,38 @@ import QuestCard from "./QuestCard";
  * admin, allow the quests to be marked completed.
  * @param {*} props 
  */
-function CurrentQuests({ familyId, avatarId, sx }) {
-  const currentQuests = useCurrentQuests(familyId, avatarId);
+function CurrentQuests({ family, avatar, sx }) {
   const { enqueueSnackbar } = useSnackbar();
-  if (currentQuests === null) return <LinearProgress />
+  const currentQuests = avatar.currentQuests;
   return (<Box sx={sx}>
     <Typography variant="h4">Current Quests</Typography>
-
     {currentQuests.length === 0 ?
       <Typography>You haven't accepted any quests.</Typography> :
       <Stack>
         {currentQuests.map(quest => {
           const completeQuestHandler = () => {
-            completeQuest(familyId, avatarId, quest);
+            const index = avatar.currentQuests.indexOf(quest);
+            avatar.currentQuests.splice(index, 1);
+            avatar.unclaimedRewards.push(quest.reward);
+            const achievement = new Achievement();
+            achievement.avatarName = avatar.name;
+            achievement.description = `Completed quest "${quest.name}!`
+            achievement.type = 'quest';
+            family.recentAchievements.push(achievement);
+            updateFamily(family);
+            updateAvatar(avatar);
             enqueueSnackbar(`Completed quest "${quest.name}".`, { variant: "success" });
           };
           const abandonQuestHandler = () => {
-            abandonQuest(familyId, avatarId, quest);
+            const index = avatar.currentQuests.indexOf(quest);
+            avatar.currentQuests.splice(index, 1);
+            family.availableQuests.push(quest);
+            updateFamily(family);
+            updateAvatar(avatar);
             enqueueSnackbar(`Abandoned quest "${quest.name}.`, { variant: "error" });
           };
           return <QuestCard
-            key={quest.id}
+            key={quest.uuid}
             quest={quest}
             buttons={[
               <Button

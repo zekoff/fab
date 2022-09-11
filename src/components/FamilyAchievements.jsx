@@ -1,14 +1,11 @@
-import { LinearProgress, List, ListItem, ListItemText, Typography } from "@mui/material";
-import { useRecentAchievements } from "../util/hooks";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
 
 function FamilyAchievements({ family }) {
-  const achievementList = useRecentAchievements(family?.id);
-  if (!family || !achievementList) return <LinearProgress />
   return (
     <>
       <Typography variant="h3">Recent {family.name} Achievements</Typography>
       <List>
-        {achievementList.map((achievement, index) => {
+        {family.recentAchievements.map((achievement, index) => {
           return (
             <ListItem key={index}>
               <ListItemText primary={achievement.description} />

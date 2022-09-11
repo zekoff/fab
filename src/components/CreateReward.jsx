@@ -1,6 +1,6 @@
 import { Box, Input, Slider, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import { Reward } from "../util/dataclasses";
+import { Reward } from "../util/firestoreClasses";
 import BrowseItems from "./BrowseItems";
 
 const XP_DEFAULT = 20;

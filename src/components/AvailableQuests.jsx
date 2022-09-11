@@ -1,9 +1,8 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { acceptQuest, deleteQuest } from "../util/firestoreWrite";
-import { useAvailableQuests } from "../util/hooks";
+import { updateAvatar, updateFamily } from "../util/firestoreWrite";
 import QuestCard from "./QuestCard";
 
 /**
@@ -12,27 +11,31 @@ import QuestCard from "./QuestCard";
  * @returns the family available quest component, or loading bar if the family
  * state has not loaded yet
  */
-function AvailableQuests({ familyId, avatarId, sx }) {
-  const availableQuests = useAvailableQuests(familyId);
+function AvailableQuests({ family, avatar, sx }) {
+  const availableQuests = family.availableQuests;
   const { enqueueSnackbar } = useSnackbar();
-  if (availableQuests === null || !avatarId) return <LinearProgress />;
   return (<Box sx={sx}>
     <Typography variant="h4">Available Quests</Typography>
-
     {availableQuests.length === 0 ?
       <Typography>There are no quests available.</Typography> :
       <Stack>
         {availableQuests.map(quest => {
           const acceptQuestHandler = () => {
-            acceptQuest(familyId, avatarId, quest);
+            avatar.currentQuests.push(quest);
+            const index = family.availableQuests.indexOf(quest);
+            family.availableQuests.splice(index, 1);
+            updateFamily(family);
+            updateAvatar(avatar);
             enqueueSnackbar(`Accepted quest "${quest.name}".`, { variant: "info" });
           };
           const deleteQuestHandler = () => {
-            deleteQuest(familyId, quest);
+            const index = family.availableQuests.indexOf(quest);
+            family.availableQuests.splice(index, 1);
+            updateFamily(family);
             enqueueSnackbar(`Deleted quest "${quest.name}".`, { variant: "error" });
           };
           return <QuestCard
-            key={quest.id}
+            key={quest.uuid}
             quest={quest}
             buttons={[
               <Button

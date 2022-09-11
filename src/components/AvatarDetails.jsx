@@ -1,12 +1,11 @@
-import { Box, Typography } from "@mui/material";
-import { useImageFromStorage } from "../util/hooks";
+import { Typography } from "@mui/material";
+import FirestoreImage from "./FirestoreImage";
 
 function AvatarDetails({ avatar }) {
-  const avatarImageSrc = useImageFromStorage(avatar?.image);
   if (!avatar) return null;
   return (
     <>
-      <Box component="img" sx={{ width: 48, height: 48 }} alt="Avatar" src={avatarImageSrc} loading="lazy" />
+      <FirestoreImage sx={{ width: 48, height: 48 }} alt="Avatar" image={avatar.image} loading="lazy" />
       <Typography variant="h5">{avatar.name}</Typography>
     </>
   );

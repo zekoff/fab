@@ -1,8 +1,7 @@
 import { getAuth } from "firebase/auth";
-import { collection, doc, getDocFromCache, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref } from "firebase/storage";
+import { collection, doc, getDocs, getFirestore, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Account, Achievement, Avatar, Family, Item, Quest, Reward } from "./dataclasses";
+import { Account, Avatar, Family, Item } from "./firestoreClasses";
 
 /**
  * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
@@ -11,7 +10,7 @@ import { Account, Achievement, Avatar, Family, Item, Quest, Reward } from "./dat
  */
 function getDataobjectWithId(doc) {
   const dataobject = doc.data();
-  dataobject.id = doc.id;
+  dataobject.firestoreId = doc.id;
   return dataobject;
 }
 
@@ -35,22 +34,17 @@ function useUser() {
  * @returns the FAB account object for the current user, or null if no user
  */
 function useAccount() {
-  const accountDefault = null;
   const user = useUser();
-  const [account, setAccount] = useState(accountDefault);
+  const [account, setAccount] = useState(null);
   useEffect(() => {
     if (!user) {
-      setAccount(accountDefault);
+      setAccount(null);
       return;
     };
     console.log("Signing up for account snapshots");
     return onSnapshot(
       doc(getFirestore(), "accounts", user.uid).withConverter(Account.converter),
-      (doc) => {
-        const accountObject = doc.data();
-        accountObject.id = doc.id;
-        setAccount(accountObject);
-      },
+      doc => setAccount(getDataobjectWithId(doc)),
       doc => console.log(doc)
     );
   }, [user]);
@@ -60,183 +54,79 @@ function useAccount() {
 /**
  * Custom hook to get family doc for current user. Each time this hook is
  * called, a new subscription to the family doc state will be created.
- * @param {*} account FAB account object, from which familyId is retrieved
- * @returns family doc/object tied to Firebase family state associated with
- * signed-in user
+ * @param {*} firestoreId Firestore ID for family doc
+ * @returns Family object tied to Firebase family state associated with
+ * signed-in user (or null if the provided ID is null); will update/sync
+ * as underlying family data updates
  */
-function useFamily(account) {
-  const familyDefault = null;
-  const [family, setFamily] = useState(familyDefault);
+function useFamily(firestoreId) {
+  const [family, setFamily] = useState(null);
   useEffect(() => {
-    if (!account?.familyId) {
-      setFamily(familyDefault);
+    if (!firestoreId) {
+      setFamily(null);
       return
     };
     console.log("Signing up for family snapshots");
     return onSnapshot(
-      doc(getFirestore(), "families", account?.familyId).withConverter(Family.converter),
+      doc(getFirestore(), "families", firestoreId).withConverter(Family.converter),
       doc => setFamily(getDataobjectWithId(doc)),
       doc => console.error(doc)
     );
-  }, [account]);
+  }, [firestoreId]);
   return family;
 }
 
 /**
- * Custom hook to get state of an Avatar based on family/avatar IDs.
- * @param {*} familyId the Firestore ID for avatar's family
- * @param {*} avatarId the Firestore ID for avatar doc
- * @returns an Avatar object synced to Firestore state
+ * Custom hook to get state of an Avatar based on avatar ID.
+ * @param {*} firestoreId Firestore ID for avatar doc
+ * @returns an Avatar object synced to Firestore state, or null if provided ID
+ * is null
  */
-function useAvatar(familyId, avatarId) {
-  const avatarDefault = null;
-  const [avatar, setAvatar] = useState(avatarDefault);
+function useAvatar(firestoreId) {
+  const [avatar, setAvatar] = useState(null);
   useEffect(() => {
-    if (!familyId || !avatarId) {
-      setAvatar(avatarDefault);
+    if (!firestoreId) {
+      setAvatar(null);
       return;
     };
-    console.log(`Signing up for avatar updates: ${avatarId}`);
+    console.log(`Signing up for avatar updates: ${firestoreId}`);
     return onSnapshot(
-      doc(getFirestore(), "families", familyId, "avatars", avatarId)
+      doc(getFirestore(), "avatars", firestoreId)
         .withConverter(Avatar.converter),
       doc => setAvatar(getDataobjectWithId(doc)),
       doc => console.error(doc)
     );
-  }, [familyId, avatarId]);
-  return avatar;
+  }, [firestoreId]);
+  return [avatar, setAvatar];
 }
 
 /**
- * Custom hook to get a list of Avatars associated with an Account's Family.
- * Each time this hook is called, a new subscription to the family's avatar
- * list will be created.
- * @param {*} account FAB account object, from which familyId is retrieved
- * @returns a list of avatar objects which include the Firestore key and and
- * any data associated with the avatar document
+ * Get a list of synced avatar data.
+ * @param {*} firestoreIdList a list with one avatar Firestore ID as each item in the list
+ * @returns a list containing one avatar object for each key in the parameter list. The resulting
+ * avatar objects are backed by and synced to the Firestore data.
  */
-function useAvatarList(account) {
-  const [avatarList, setAvatarList] = useState([]);
+function useAvatarList(firestoreIdList) {
+  const [avatarList, setAvatarList] = useState(null);
   useEffect(() => {
-    if (!account?.familyId) {
-      setAvatarList([]);
+    if (!firestoreIdList) {
+      setAvatarList(null);
       return;
-    };
-    const query = collection(getFirestore(),
-      "families", account.familyId, "avatars").withConverter(Avatar.converter);
-    console.log("Signing up for avatar list updates");
+    }
+    console.log("Signing up for updates on all avatars");
+    const collectionRef = collection(getFirestore(), "avatars").withConverter(Avatar.converter);
+    const queryRef = query(collectionRef, where("__name__", "in", firestoreIdList));
     return onSnapshot(
-      query,
-      queryResult => setAvatarList(queryResult.docs.map(doc => getDataobjectWithId(doc))),
-      queryResult => console.log(queryResult)
+      queryRef,
+      queryResult => {
+        const results = [];
+        queryResult.forEach(result => results.push(getDataobjectWithId(result)));
+        setAvatarList(results);
+      },
+      queryResult => console.error(queryResult)
     );
-  }, [account]);
+  }, [firestoreIdList]);
   return avatarList;
-}
-
-/**
- * Custom hook to get a FAB Avatar's Inventory. Each time this hook is called,
- * a new subscription to the avatar's inventory will be created. The returned
- * list will be a list of Firestore IDs for documents in the item collection.
- * @param {*} familyId Firestore ID for family
- * @param {*} avatarId Firestore ID for avatar
- * @returns the avatar's inventory as a list
- */
-function useInventory(familyId, avatarId) {
-  const [inventory, setInventory] = useState([]);
-  useEffect(() => {
-    if (!familyId || !avatarId) {
-      setInventory([]);
-      return
-    };
-    const query = collection(getFirestore(), "families", familyId, "avatars", avatarId, "inventory");
-    console.log(`Signing up for inventory updates on avatar ${avatarId}`);
-    return onSnapshot(
-      query,
-      queryResult => setInventory(queryResult.docs.map(doc => doc.data().itemId)),
-      queryResult => console.error(queryResult)
-    );
-  }, [familyId, avatarId]);
-  return inventory;
-}
-
-/**
- * Custom hook to sign up for a synced list of any unclaimed rewards the avatar has.
- * @param {*} familyId 
- * @param {*} avatarId 
- * @returns 
- */
-function useUnclaimedRewards(familyId, avatarId) {
-  const defaultUnclaimedRewards = null;
-  const [unclaimedRewards, setUnclaimedRewards] = useState(defaultUnclaimedRewards);
-  useEffect(() => {
-    if (!familyId || !avatarId) {
-      setUnclaimedRewards(defaultUnclaimedRewards);
-      return;
-    }
-    const query = collection(getFirestore(), "families", familyId, "avatars", avatarId,
-      "unclaimedRewards").withConverter(Reward.converter);
-    console.log(`Signing up for unclaimed rewards on avatar ${avatarId}`);
-    return onSnapshot(
-      query,
-      queryResult => setUnclaimedRewards(queryResult.docs.map(doc => getDataobjectWithId(doc))),
-      queryResult => console.error(queryResult)
-    );
-  }, [familyId, avatarId]);
-  return unclaimedRewards;
-}
-
-/**
- * Custom hook to get the list of current Quests for an avatar.
- * @param {*} familyId the Firestore ID of the family
- * @param {*} avatarId Firestore ID of the avatar
- * @returns the list of current quests, possibly empty, or null if the familyID
- * or avatarID was null
- */
-function useCurrentQuests(familyId, avatarId) {
-  const defaultQuests = null;
-  const [quests, setQuests] = useState(defaultQuests);
-  useEffect(() => {
-    if (!familyId || !avatarId) {
-      setQuests(defaultQuests);
-      return;
-    }
-    const query = collection(getFirestore(), "families", familyId, "avatars",
-      avatarId, "currentQuests").withConverter(Quest.converter);
-    console.log(`Signing up for quest updates on avatar ${avatarId}`);
-    return onSnapshot(
-      query,
-      queryResult => setQuests(queryResult.docs.map(doc => getDataobjectWithId(doc))),
-      queryResult => console.error(queryResult)
-    );
-  }, [familyId, avatarId]);
-  return quests;
-}
-
-/**
- * Custom hook to get the available Quests for a family.
- * @param {*} familyId the Firestore family document ID
- * @returns a list of Quests synced to Firestore, possibly empty, or null if
- * the familyId was null
- */
-function useAvailableQuests(familyId) {
-  const defaultQuests = null;
-  const [quests, setQuests] = useState(defaultQuests);
-  useEffect(() => {
-    if (!familyId) {
-      setQuests(defaultQuests);
-      return;
-    }
-    const query = collection(getFirestore(), "families", familyId, "availableQuests")
-      .withConverter(Quest.converter);
-    console.log(`Signing up for quest updates on family ${familyId}`);
-    return onSnapshot(
-      query,
-      queryResult => setQuests(queryResult.docs.map(doc => getDataobjectWithId(doc))),
-      queryResult => console.error(queryResult)
-    );
-  }, [familyId]);
-  return quests;
 }
 
 /**
@@ -245,70 +135,17 @@ function useAvailableQuests(familyId) {
  * with the firestore.
  * @returns the list of Items
  */
-function useGenericItemList() {
+function useGenericItemDefinitions() {
   const [itemList, setItemList] = useState([]);
   useEffect(() => {
     (async () => {
-      const query = collection(getFirestore(), "items").withConverter(Item.converter);
+      const query = collection(getFirestore(), "itemDefinitions").withConverter(Item.converter);
       console.log("Retrieving item list from Firestore");
       const queryResult = await getDocs(query);
-      const itemListData = queryResult.docs.map(doc => getDataobjectWithId(doc));
-      setItemList(itemListData);
+      setItemList(queryResult);
     })();
   }, []);
   return itemList;
 }
 
-/**
- * Get a URL for an image that is stored in Firebase Storage. The returned URL
- * is suitable as an image src tag.
- * @param {*} imagePath the Firebase Storage file location
- * @returns valid URL of the image file
- */
-function useImageFromStorage(imagePath) {
-  const user = useUser();
-  const [imageSrc, setImageSrc] = useState(null);
-  useEffect(() => {
-    if (!user) return;
-    if (!imagePath) return;
-    const imageRef = ref(getStorage(), imagePath);
-    (async () => {
-      console.log(`Fetching URL for image ${imagePath}`);
-      const downloadUrl = await getDownloadURL(imageRef);
-      setImageSrc(downloadUrl);
-    })();
-  }, [imagePath, user]);
-  return imageSrc;
-}
-
-/**
- * Custom hook to get list of family's recent achievements.
- * @param {*} familyId 
- * @returns the list of Achievement objects, or null if familyId
- * was null
- */
-function useRecentAchievements(familyId) {
-  const defaultAchievementList = null;
-  const [achievementList, setAchievementList] = useState(defaultAchievementList);
-  useEffect(() => {
-    if (!familyId) {
-      setAchievementList(defaultAchievementList);
-      return;
-    }
-    const query = collection(getFirestore(), "families", familyId,
-      "recentAchievements").withConverter(Achievement.converter);
-    console.log(`Signing up for achievement updates on ${familyId}`);
-    return onSnapshot(
-      query,
-      queryResult => setAchievementList(queryResult.docs.map(doc => getDataobjectWithId(doc))),
-      queryResult => console.error(queryResult)
-    );
-  }, [familyId]);
-  return achievementList;
-}
-
-export {
-  useUser, useAccount, useFamily, useAvatar, useAvatarList, useInventory,
-  useGenericItemList, useImageFromStorage, useCurrentQuests, useAvailableQuests,
-  useRecentAchievements, useUnclaimedRewards
-};
+export { useUser, useAccount, useFamily, useAvatar, useAvatarList, useGenericItemDefinitions };
