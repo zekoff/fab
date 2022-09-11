@@ -8,7 +8,7 @@ function AvatarInventory({ avatar }) {
       <List>
         {
           avatar.inventory.map(item =>
-            <ItemDetails key={item.id} item={item} sx={{ m: 1, p: 1 }} />)
+            <ItemDetails key={item.uuid} item={item} sx={{ m: 1, p: 1 }} />)
         }
       </List>
     </>

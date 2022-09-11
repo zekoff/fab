@@ -174,6 +174,7 @@ class Quest {
     const quest = new Quest();
     ["uuid", "name", "description"].forEach(field => quest[field] = data[field]);
     if (data.reward) quest.reward = Reward.createFromData(data.reward);
+    return quest;
   }
 }
 
@@ -191,6 +192,14 @@ class Reward {
     ["uuid", "xp", "coins"].forEach(field => reward[field] = data[field]);
     data.items?.forEach(item => reward.items.push(Item.createFromData(item)));
     return reward
+  }
+
+  static fromObject({ xp = 20, coins = 100, items = [] }) {
+    const reward = new Reward();
+    reward.xp = xp;
+    reward.coins = coins;
+    reward.items = items;
+    return reward;
   }
 
   toString() {

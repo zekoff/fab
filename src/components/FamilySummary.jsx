@@ -5,8 +5,7 @@ import AvatarSummary from "./AvatarSummary";
 /**
  * Shows information about Family of signed-in user.
  */
-function FamilySummary({ family }) {
-  const avatarList = []; // NYI
+function FamilySummary({ family, avatarList }) {
   if (!avatarList) return <LinearProgress />;
   function testAvatarUpdate(avatar) {
     let n = Math.ceil(Math.random() * 40);
@@ -20,7 +19,7 @@ function FamilySummary({ family }) {
       <Typography variant="h4">{family.name} Family Members</Typography>
       <Stack spacing={2}>
         {avatarList.map(avatar =>
-          <AvatarSummary key={avatar.id} family={family} avatar={avatar} testAvatarUpdateFunction={testAvatarUpdate} />)}
+          <AvatarSummary key={avatar.firestoreId} family={family} avatar={avatar} testAvatarUpdateFunction={testAvatarUpdate} />)}
       </Stack>
     </Box>
   )

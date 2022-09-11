@@ -1,12 +1,12 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
-import { useState } from "react";
-import { Quest, Reward } from "../util/dataclasses";
-import { addQuest } from "../util/firestoreWrite";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
+import { useState } from "react";
+import { Quest, Reward } from "../util/firestoreClasses";
+import { updateFamily } from "../util/firestoreWrite";
 import CreateReward from "./CreateReward";
 
-function CreateQuest({ familyId, sx }) {
+function CreateQuest({ family, sx }) {
   const [questName, setQuestName] = useState("");
   const [questNameError, setQuestNameError] = useState("");
   const [questDescription, setQuestDescription] = useState("");
@@ -28,7 +28,8 @@ function CreateQuest({ familyId, sx }) {
     quest.name = questName;
     quest.description = questDescription;
     quest.reward = questReward;
-    addQuest(familyId, quest);
+    family.availableQuests.push(quest);
+    updateFamily(family);
     enqueueSnackbar(`Created new quest "${quest.name}".`, { variant: "info" });
     setQuestName("");
     setQuestDescription("");

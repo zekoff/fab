@@ -1,5 +1,4 @@
-import { CircularProgress } from "@mui/material";
-import { useState } from "react";
+import { CircularProgress, Typography } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
@@ -9,19 +8,17 @@ import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
 import FamilySummary from "./components/FamilySummary";
 import Layout from "./components/Layout";
-import { useAccount, useAvatar, useFamily, useGenericItemDefinitions } from "./util/hooks";
+import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemDefinitions } from "./util/hooks";
 
 function App() {
   const account = useAccount();
-  console.log(account);
   const family = useFamily(account?.familyFirestoreId);
-  console.log(family);
-  const avatar = useAvatar(account?.avatarFirestoreId);
-  console.log(avatar);
+  const [avatar, setAvatar] = useAvatar(account?.avatarFirestoreId);
+  const avatarList = useAvatarList(family?.avatarFirestoreIds)
   const itemDefinitions = useGenericItemDefinitions();
-  const setAvatar = () => {}; // NYI
-  if (![account, family, avatar, itemDefinitions].every(Boolean)) return <CircularProgress />
-  return (
+  if (![account, family, avatar, avatarList, itemDefinitions].every(Boolean)) return <CircularProgress />
+  return (<>
+    <Typography variant="h2">FAB</Typography>
     <Routes>
       <Route path="/" element={
         <Layout account={account} avatar={avatar} setAvatar={setAvatar} />
@@ -29,7 +26,7 @@ function App() {
         <Route index element={
           <>
             <FamilyAchievements family={family} />
-            <FamilySummary family={family} />
+            <FamilySummary family={family} avatarList={avatarList} />
           </>
         } />
         <Route path="avatar" element={
@@ -40,14 +37,19 @@ function App() {
         } />
         <Route path="quests" element={
           <>
-            {/* <CurrentQuests avatar={avatar} sx={{ marginBottom: 2 }} />
-            <AvailableQuests family={family} sx={{ marginBottom: 2 }} />
-            <CreateQuest family={family} /> */}
+            <CurrentQuests family={family} avatar={avatar} sx={{ marginBottom: 2 }} />
+            <AvailableQuests family={family} avatar={avatar} sx={{ marginBottom: 2 }} />
+            <CreateQuest family={family} />
           </>
         } />
       </Route>
+      <Route path="/admin" element={
+        <>
+          <Typography variant="h2">Admin Area NYI</Typography>
+        </>
+      } />
     </Routes>
-  );
+  </>);
 }
 
 export default App;

@@ -1,14 +1,14 @@
 import { getAuth } from "firebase/auth";
-import { collection, doc, getDocs, getFirestore, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDocs, getFirestore, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Account, Avatar, Family, Item } from "./dataclasses";
+import { Account, Avatar, Family, Item } from "./firestoreClasses";
 
 /**
  * Create a FAB dataobject using a Firestore conversion, then add its Firestore ID.
  * @param {*} doc the Firestore doc object, returned by snapshot update or other 
  * @returns a dataobject with Firestore data including doc ID
  */
- function getDataobjectWithId(doc) {
+function getDataobjectWithId(doc) {
   const dataobject = doc.data();
   dataobject.firestoreId = doc.id;
   return dataobject;
@@ -54,9 +54,10 @@ function useAccount() {
 /**
  * Custom hook to get family doc for current user. Each time this hook is
  * called, a new subscription to the family doc state will be created.
- * @param {*} account FAB account object, from which familyId is retrieved
- * @returns family doc/object tied to Firebase family state associated with
- * signed-in user
+ * @param {*} firestoreId Firestore ID for family doc
+ * @returns Family object tied to Firebase family state associated with
+ * signed-in user (or null if the provided ID is null); will update/sync
+ * as underlying family data updates
  */
 function useFamily(firestoreId) {
   const [family, setFamily] = useState(null);
@@ -76,10 +77,10 @@ function useFamily(firestoreId) {
 }
 
 /**
- * Custom hook to get state of an Avatar based on family/avatar IDs.
- * @param {*} familyId the Firestore ID for avatar's family
- * @param {*} avatarId the Firestore ID for avatar doc
- * @returns an Avatar object synced to Firestore state
+ * Custom hook to get state of an Avatar based on avatar ID.
+ * @param {*} firestoreId Firestore ID for avatar doc
+ * @returns an Avatar object synced to Firestore state, or null if provided ID
+ * is null
  */
 function useAvatar(firestoreId) {
   const [avatar, setAvatar] = useState(null);
@@ -96,7 +97,36 @@ function useAvatar(firestoreId) {
       doc => console.error(doc)
     );
   }, [firestoreId]);
-  return avatar;
+  return [avatar, setAvatar];
+}
+
+/**
+ * Get a list of synced avatar data.
+ * @param {*} firestoreIdList a list with one avatar Firestore ID as each item in the list
+ * @returns a list containing one avatar object for each key in the parameter list. The resulting
+ * avatar objects are backed by and synced to the Firestore data.
+ */
+function useAvatarList(firestoreIdList) {
+  const [avatarList, setAvatarList] = useState(null);
+  useEffect(() => {
+    if (!firestoreIdList) {
+      setAvatarList(null);
+      return;
+    }
+    console.log("Signing up for updates on all avatars");
+    const collectionRef = collection(getFirestore(), "avatars").withConverter(Avatar.converter);
+    const queryRef = query(collectionRef, where("__name__", "in", firestoreIdList));
+    return onSnapshot(
+      queryRef,
+      queryResult => {
+        const results = [];
+        queryResult.forEach(result => results.push(getDataobjectWithId(result)));
+        setAvatarList(results);
+      },
+      queryResult => console.error(queryResult)
+    );
+  }, [firestoreIdList]);
+  return avatarList;
 }
 
 /**
@@ -118,4 +148,4 @@ function useGenericItemDefinitions() {
   return itemList;
 }
 
-export { useUser, useAccount, useFamily, useAvatar, useGenericItemDefinitions };
+export { useUser, useAccount, useFamily, useAvatar, useAvatarList, useGenericItemDefinitions };

@@ -12,6 +12,7 @@
 - Refactor hooks that use nested Firestore data so that all data populates completely before returning
 - Perform state null checking outside components, so that components can assume their props are populated
 - Component to allow user to set their avatar image
+- Restrict avatar data access to correct family
 
 ## Backlog
 

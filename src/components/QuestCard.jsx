@@ -10,13 +10,13 @@ import { Card, CardActions, CardContent, Divider, Stack, Typography } from "@mui
  */
 function QuestCard({ quest, buttons, sx }) {
   return (
-    <Card sx={{...sx, margin: 1}}>
+    <Card sx={{ margin: 1, ...sx }}>
       <CardContent>
         <Stack>
           <Typography variant="h5">{quest.name}</Typography>
           <Divider />
           <Typography variant="body">{quest.description}</Typography>
-          <Typography variant="caption">Reward: {"[NYI]"}</Typography>
+          <Typography variant="caption">Reward: {quest.reward.toString()}</Typography>
         </Stack>
       </CardContent>
       <CardActions>

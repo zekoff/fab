@@ -1,8 +1,8 @@
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Button, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { acceptQuest, deleteQuest } from "../util/firestoreWrite";
+import { updateAvatar, updateFamily } from "../util/firestoreWrite";
 import QuestCard from "./QuestCard";
 
 /**
@@ -16,21 +16,26 @@ function AvailableQuests({ family, avatar, sx }) {
   const { enqueueSnackbar } = useSnackbar();
   return (<Box sx={sx}>
     <Typography variant="h4">Available Quests</Typography>
-
     {availableQuests.length === 0 ?
       <Typography>There are no quests available.</Typography> :
       <Stack>
         {availableQuests.map(quest => {
           const acceptQuestHandler = () => {
-            acceptQuest(family, avatar, quest);
+            avatar.currentQuests.push(quest);
+            const index = family.availableQuests.indexOf(quest);
+            family.availableQuests.splice(index, 1);
+            updateFamily(family);
+            updateAvatar(avatar);
             enqueueSnackbar(`Accepted quest "${quest.name}".`, { variant: "info" });
           };
           const deleteQuestHandler = () => {
-            deleteQuest(family, quest);
+            const index = family.availableQuests.indexOf(quest);
+            family.availableQuests.splice(index, 1);
+            updateFamily(family);
             enqueueSnackbar(`Deleted quest "${quest.name}".`, { variant: "error" });
           };
           return <QuestCard
-            key={quest.id}
+            key={quest.uuid}
             quest={quest}
             buttons={[
               <Button
