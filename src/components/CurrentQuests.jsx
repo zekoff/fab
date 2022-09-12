@@ -26,7 +26,7 @@ function CurrentQuests({ family, avatar, sx }) {
             avatar.unclaimedRewards.push(quest.reward);
             const achievement = new Achievement();
             achievement.avatarName = avatar.name;
-            achievement.description = `Completed quest "${quest.name}!`
+            achievement.description = `Completed quest "${quest.name}"!`
             achievement.type = 'quest';
             family.recentAchievements.push(achievement);
             updateFamily(family);

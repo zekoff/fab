@@ -2,7 +2,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import FirestoreImage from './FirestoreImage';
+import FirebaseImage from './FirebaseImage';
 
 const IMG_SIZE = 36;
 
@@ -11,7 +11,7 @@ function ItemDetails({ item, sx }) {
   return <Paper onClick={() => setShowDetail(!showDetail)} sx={sx}
     component={Stack} direction="column">
     <Stack direction={"row"} alignItems="center">
-      <FirestoreImage image={item.image}
+      <FirebaseImage image={item.image}
         sx={{ width: IMG_SIZE, height: IMG_SIZE, flexGrow: 0, mr: 1 }} />
       <Typography sx={{ flexGrow: 1 }}>{item.name}</Typography>
       {showDetail ?

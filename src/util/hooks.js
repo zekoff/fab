@@ -136,7 +136,7 @@ function useAvatarList(firestoreIdList) {
  * @returns the list of Items
  */
 function useGenericItemDefinitions() {
-  const [itemList, setItemList] = useState([]);
+  const [itemList, setItemList] = useState(null);
   useEffect(() => {
     (async () => {
       const query = collection(getFirestore(), "itemDefinitions").withConverter(Item.converter);

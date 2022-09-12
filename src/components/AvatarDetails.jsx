@@ -1,11 +1,11 @@
 import { Typography } from "@mui/material";
-import FirestoreImage from "./FirestoreImage";
+import FirebaseImage from "./FirebaseImage";
 
 function AvatarDetails({ avatar }) {
   if (!avatar) return null;
   return (
     <>
-      <FirestoreImage sx={{ width: 48, height: 48 }} alt="Avatar" image={avatar.image} loading="lazy" />
+      <FirebaseImage sx={{ width: 48, height: 48 }} alt="Avatar" image={avatar.image} loading="lazy" />
       <Typography variant="h5">{avatar.name}</Typography>
     </>
   );

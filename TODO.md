@@ -2,15 +2,12 @@
 
 - Add Avatar name, image, coins, level, and XP to appbar or otherwise pinned to top
 - Component to receive rewards and open treasure boxes (add to Avatar screen)
-- Consider flattening all family data. Would need to add JS UUID generation method
 - Shop component
 - Add fanfare/juice for level-ups and opening treasure boxes. Show coins going into a piggy bank.
 - Allow direct addition of a family achievement
 - Improve achievement recording and display
 - Component to show available images from Storage
 - Component to show available Items, populated with images
-- Refactor hooks that use nested Firestore data so that all data populates completely before returning
-- Perform state null checking outside components, so that components can assume their props are populated
 - Component to allow user to set their avatar image
 - Restrict avatar data access to correct family
 

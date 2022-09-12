@@ -1,5 +1,5 @@
-import { CircularProgress, Typography } from "@mui/material";
-import { Route, Routes } from "react-router-dom";
+import { CircularProgress, Container, Typography } from "@mui/material";
+import { Outlet, Route, Routes } from "react-router-dom";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
 import AvatarInventory from "./components/AvatarInventory";
@@ -7,7 +7,7 @@ import CreateQuest from "./components/CreateQuest";
 import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
 import FamilySummary from "./components/FamilySummary";
-import Layout from "./components/Layout";
+import { BottomNavBar, TopAppBar } from "./components/NavigationBars";
 import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemDefinitions } from "./util/hooks";
 
 function App() {
@@ -16,13 +16,26 @@ function App() {
   const [avatar, setAvatar] = useAvatar(account?.avatarFirestoreId);
   const avatarList = useAvatarList(family?.avatarFirestoreIds)
   const itemDefinitions = useGenericItemDefinitions();
-  if (![account, family, avatar, avatarList, itemDefinitions].every(Boolean)) return <CircularProgress />
+
+  // The custom data hooks will have null values until they are synced with Firestore data
+  const serverDataNeeded = [account, family, avatar, avatarList, itemDefinitions];
+  if (!serverDataNeeded.every(Boolean)) {
+    const dataLoaded = serverDataNeeded.reduce((previous, current) => {
+      if (current !== null) return previous + 1; else return previous;
+    }, 0);
+    const progress = dataLoaded / serverDataNeeded.length * 100
+    return <CircularProgress variant="determinate" value={progress} />;
+  }
+
   return (<>
-    <Typography variant="h2">FAB</Typography>
+    <TopAppBar family={family} avatar={avatar} avatarList={avatarList} setAvatar={setAvatar} />
     <Routes>
-      <Route path="/" element={
-        <Layout account={account} avatar={avatar} setAvatar={setAvatar} />
-      }>
+      <Route path="/" element={<>
+        <Container sx={{ paddingBottom: 8 }}>
+          <Outlet />
+        </Container>
+        <BottomNavBar />
+      </>}>
         <Route index element={
           <>
             <FamilyAchievements family={family} />
@@ -49,6 +62,7 @@ function App() {
         </>
       } />
     </Routes>
+
   </>);
 }
 

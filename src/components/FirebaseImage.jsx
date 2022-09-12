@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 
-function FirestoreImage({ image, ...props }) {
+function FirebaseImage({ image, ...props }) {
   const [src, setSrc] = useState(null);
   useEffect(() => {
     (async () => {
@@ -18,4 +18,4 @@ function FirestoreImage({ image, ...props }) {
   />
 }
 
-export default FirestoreImage;
+export default FirebaseImage;

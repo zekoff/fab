@@ -1,12 +1,12 @@
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
-import FirestoreImage from "./FirestoreImage";
+import FirebaseImage from "./FirebaseImage";
 
 function AvatarSummary({ avatar, testAvatarUpdateFunction }) {
   return (
     <Paper>
       <Grid container padding={2} spacing={10} alignItems={"center"} justifyContent="space-evenly">
         <Grid item xs={2}>
-          <Avatar component={FirestoreImage} alt={avatar.name} image={avatar.image} variant="square" />
+          <Avatar component={FirebaseImage} alt={avatar.name} image={avatar.image} variant="square" />
         </Grid>
         <Grid item xs={4}>
           <Typography>{avatar.name}</Typography>
