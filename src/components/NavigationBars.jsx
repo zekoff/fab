@@ -1,11 +1,12 @@
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
 import PersonIcon from '@mui/icons-material/Person';
 
-import { AppBar, BottomNavigation, BottomNavigationAction, Button, Dialog, DialogTitle, Divider, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, BottomNavigation, BottomNavigationAction, Box, Button, Dialog, DialogTitle, Divider, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
 import UserButton from "./UserButton";
 
@@ -20,16 +21,21 @@ function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvat
       <DialogTitle>Switch to Avatar:</DialogTitle>
       <List>
         {avatarList.map(avatar => {
-          return (<ListItem
-            key={avatar.firestoreId}
-            button
-            onClick={() => {
-              handleDialogClose();
-              setAvatar(avatar);
-            }}
-          >
-            <ListItemText primary={avatar.name} />
-          </ListItem>)
+          return (<Box key={avatar.firestoreId}>
+            <Divider />
+            <ListItem
+              button
+              onClick={() => {
+                handleDialogClose();
+                setAvatar(avatar);
+              }}
+            >
+              <Stack direction="row" alignItems="center">
+                <FirebaseImage image={avatar.image} sx={{ m: 1, width: 24, height: 24 }} />
+                <ListItemText primary={avatar.name} />
+              </Stack>
+            </ListItem>
+          </Box>)
         })}
       </List>
     </Dialog>
@@ -59,7 +65,7 @@ function TopAppBar({ family, avatar, avatarList, setAvatar, ...props }) {
         {user === null ?
           <UserButton sx={{ flexGrow: 0 }} /> :
           <Button sx={{ flexGrow: 0 }} variant="contained" onClick={handleMenu}>
-            <FirebaseImage image={avatar.image} />
+            {avatar.name}<FirebaseImage image={avatar.image} sx={{ ml: 1 }} />
           </Button>
         }
         <Menu
@@ -105,6 +111,7 @@ function BottomNavBar({ ...props }) {
     <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="/" />
     <BottomNavigationAction label="Avatar" icon={<PersonIcon />} component={NavLink} to="avatar" />
     <BottomNavigationAction label="Quests" icon={<AssignmentLateIcon />} component={NavLink} to="quests" />
+    <BottomNavigationAction label="Shop" icon={<MonetizationOnIcon />} component={NavLink} to="shop" />
   </BottomNavigation>
 }
 

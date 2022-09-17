@@ -47,6 +47,7 @@ class Family {
   avatarFirestoreIds = []; // list of 1..n strings
   availableQuests = []; // list of 0..n Quest objects
   recentAchievements = []; // list of 0..n Achievement objects
+  shopInventory = []; // list of 0..n Item objects
   image; // location of image in Firebase Storage
 
   static converter = {
@@ -75,6 +76,8 @@ class Family {
       family.availableQuests.push(Quest.createFromData(quest)));
     data.recentAchievements?.forEach(achievement =>
       family.recentAchievements.push(Achievement.createFromData(achievement)));
+    data.shopInventory?.forEach(item =>
+      family.shopInventory.push(Item.createFromData(item)));
     return family;
   }
 }
@@ -89,11 +92,17 @@ class ItemDefinition {
   description = "An object of awe and wonder.";
   value = 100;
   tags = []; // list of 0..n item tags
-  theme = "fantasy";
+  theme; // null if generic (usable by any theme)
   image; // location of the image in Firebase Storage
+  familyFirestoreId; // null if generic (not custom family item)
 
   static converter = makeConverter(ItemDefinition);
 
+  /**
+   * Create an Item from this definition. The created Item is suitable for
+   * storing in an inventory or including in a Reward.
+   * @returns a copy of the Item described by this ItemDefinition
+   */
   makeItem() {
     const item = Item();
     ["name", "description", "value", "tags", "image"].forEach(

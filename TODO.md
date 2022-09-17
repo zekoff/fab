@@ -34,6 +34,7 @@
 - Disable buttons that cause server actions after they are used, until they disappear
 - Add a display-only screen for family status and recent achievements (kiosk mode)
 - Add filtering/searching for inventory list
+- Add lazy loading / fade-in of images to FirestoreImage component
 
 ## Potential item tags
 
@@ -43,4 +44,5 @@
 - consumable
 - tradeable (can be sent to another as Treasure)
 - transient (when purchased, does not go into inventory)
+- unique (when purchased, disappears from shop)
 - family_defined (created by family admin, and applicable only to that family, contained in family item list vs. defined in top-level Firestore collection)

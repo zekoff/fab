@@ -8,6 +8,7 @@ import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
 import FamilySummary from "./components/FamilySummary";
 import { BottomNavBar, TopAppBar } from "./components/NavigationBars";
+import PurchaseItems from "./components/PurchaseItems";
 import UnclaimedRewards from "./components/UnclaimedRewards";
 import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemDefinitions } from "./util/hooks";
 
@@ -18,7 +19,12 @@ function App() {
   const avatarList = useAvatarList(family?.avatarFirestoreIds)
   const itemDefinitions = useGenericItemDefinitions();
 
-  // The custom data hooks will have null values until they are synced with Firestore data
+  /**
+   * The custom data hooks will have null values until they are synced with Firestore data.
+   * If any needed data is null, show a loading bar. Once all data is loaded, the bar will
+   * disappear and all components can expect that their data is not null. (It may still be
+   * empty or otherwise not populated, but it will reflect the value from the Firestore.)
+   */
   const serverDataNeeded = [account, family, avatar, avatarList, itemDefinitions];
   if (!serverDataNeeded.every(Boolean)) {
     const dataLoaded = serverDataNeeded.reduce((previous, current) => {
@@ -56,6 +62,11 @@ function App() {
             <CurrentQuests family={family} avatar={avatar} sx={{ marginBottom: 2 }} />
             <AvailableQuests family={family} avatar={avatar} sx={{ marginBottom: 2 }} />
             <CreateQuest family={family} />
+          </>
+        } />
+        <Route path="shop" element={
+          <>
+            <PurchaseItems avatar={avatar} family={family} />
           </>
         } />
       </Route>

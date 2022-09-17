@@ -10,7 +10,7 @@ function ItemDetails({ item, sx }) {
   const [showDetail, setShowDetail] = useState(false);
   return <Paper onClick={() => setShowDetail(!showDetail)} sx={sx}
     component={Stack} direction="column">
-    <Stack direction={"row"} alignItems="center">
+    <Stack direction="row" alignItems="center">
       <FirebaseImage image={item.image}
         sx={{ width: IMG_SIZE, height: IMG_SIZE, flexGrow: 0, mr: 1 }} />
       <Typography sx={{ flexGrow: 1 }}>{item.name}</Typography>
