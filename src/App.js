@@ -1,4 +1,4 @@
-import { CircularProgress, Container, Typography } from "@mui/material";
+import { CircularProgress, Container, Divider, Typography } from "@mui/material";
 import { Outlet, Route, Routes } from "react-router-dom";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
@@ -8,6 +8,7 @@ import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
 import FamilySummary from "./components/FamilySummary";
 import { BottomNavBar, TopAppBar } from "./components/NavigationBars";
+import UnclaimedRewards from "./components/UnclaimedRewards";
 import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemDefinitions } from "./util/hooks";
 
 function App() {
@@ -45,6 +46,8 @@ function App() {
         <Route path="avatar" element={
           <>
             <AvatarDetails avatar={avatar} />
+            <Divider sx={{ m: 1 }} />
+            <UnclaimedRewards avatar={avatar} />
             <AvatarInventory avatar={avatar} />
           </>
         } />

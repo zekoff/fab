@@ -1,7 +1,5 @@
 # TODO
 
-- Add Avatar name, image, coins, level, and XP to appbar or otherwise pinned to top
-- Component to receive rewards and open treasure boxes (add to Avatar screen)
 - Shop component
 - Add fanfare/juice for level-ups and opening treasure boxes. Show coins going into a piggy bank.
 - Allow direct addition of a family achievement
@@ -10,10 +8,12 @@
 - Component to show available Items, populated with images
 - Component to allow user to set their avatar image
 - Restrict avatar data access to correct family
+- Improve quest description storage (ex. line breaks)
 
 ## Backlog
 
 - Implement item tag options as enum-like
+- Capture rich formatted text in quest descriptions
 - Add back in ability to add item(s) as Quest Rewards
 - Refactor CreateQuest and CreateReward for better integration with item browser and reward creation in general. When selecting item for quest creation, consider using Dialog
 - Add toggle to account menu to show screens as if a non-admin is logged in
