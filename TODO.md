@@ -3,9 +3,6 @@
 - Component to manage family shop inventory (add directly to shop, or save as item definition)
 - Add fanfare/juice for level-ups and opening treasure boxes. Show coins going into a piggy bank.
 - Allow direct addition of a family achievement
-- Improve achievement recording and display
-- Component to show available images from Storage
-- Component to show available Items, populated with images
 - Component to allow user to set their avatar image
 - Restrict avatar data access to correct family
 - Improve quest description storage (ex. line breaks)
@@ -23,6 +20,7 @@
 - If user is not logged in, redirect UI to sign-in page
 - Build account creation screens
 - Implement one-time sign-up codes for family admins to extend invitations
+- Component to show available ItemDefinitions, populated with images
 - Component to send Treasure to another Avatar (coins/items only)
 - Allow family admins to delete avatars
 - Data validation for inputs (created quests, etc.)

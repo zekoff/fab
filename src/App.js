@@ -1,4 +1,4 @@
-import { CircularProgress, Container, Divider, Typography } from "@mui/material";
+import { CircularProgress, Container, Divider, Stack, Typography } from "@mui/material";
 import { Outlet, Route, Routes } from "react-router-dom";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./widgets/AvatarDetails";
@@ -12,14 +12,26 @@ import { BottomNavBar, TopAppBar } from "./components/NavigationBars";
 import PurchaseItems from "./components/PurchaseItems";
 import UnclaimedRewards from "./components/UnclaimedRewards";
 import { updateFamily } from "./util/firestoreWrite";
-import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemDefinitions } from "./util/hooks";
+import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemDefinitions, useUser } from "./util/hooks";
+import UserButton from "./widgets/UserButton";
 
 function App() {
+  const user = useUser();
   const account = useAccount();
   const family = useFamily(account?.familyFirestoreId);
   const [avatar, setAvatar] = useAvatar(account?.avatarFirestoreId);
   const avatarList = useAvatarList(family?.avatarFirestoreIds)
   const itemDefinitions = useGenericItemDefinitions();
+
+  if (user === null) {
+    // User is definitively not signed in; show sign-in button
+    return <Container sx={{ p: 2 }}>
+      <Stack alignItems="center">
+        <Typography variant="h1">Sign In to FAB</Typography>
+        <UserButton />
+      </Stack>
+    </Container>
+  }
 
   /**
    * The custom data hooks will have null values until they are synced with Firestore data.

@@ -60,7 +60,7 @@ function TopAppBar({ family, avatar, avatarList, setAvatar, ...props }) {
         <FirebaseImage image={family.image} sx={{ flexGrow: 0, mr: 1 }} />
         <Typography component={Link} style={{ textDecoration: 'none', color: 'inherit' }}
           to="/" variant='h5' sx={{ flexGrow: 1 }}>
-          {`${family.name} Achievement Board`}
+          {`${family.name} FAB`}
         </Typography>
         {user === null ?
           <UserButton sx={{ flexGrow: 0 }} /> :
