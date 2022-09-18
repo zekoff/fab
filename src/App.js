@@ -1,7 +1,7 @@
 import { CircularProgress, Container, Divider, Typography } from "@mui/material";
 import { Outlet, Route, Routes } from "react-router-dom";
 import AvailableQuests from "./components/AvailableQuests";
-import AvatarDetails from "./components/AvatarDetails";
+import AvatarDetails from "./widgets/AvatarDetails";
 import AvatarInventory from "./components/AvatarInventory";
 import CreateItem from "./components/CreateItem";
 import CreateQuest from "./components/CreateQuest";

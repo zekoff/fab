@@ -8,12 +8,12 @@ import PersonIcon from '@mui/icons-material/Person';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, Box, Button, Dialog, DialogTitle, Divider, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
-import UserButton from "./UserButton";
+import UserButton from "../widgets/UserButton";
 
 import { Link, NavLink } from "react-router-dom";
 import { getAuth, signOut } from 'firebase/auth';
 import { useUser } from '../util/hooks';
-import FirebaseImage from './FirebaseImage';
+import FirebaseImage from '../widgets/FirebaseImage';
 
 function AvatarChangeDialog({ dialogOpen, avatarList, handleDialogClose, setAvatar }) {
   return (

@@ -2,8 +2,8 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { Item } from "../util/firestoreClasses";
 import clone from "lodash.clonedeep";
-import FirebaseImage from "./FirebaseImage";
-import FirebaseImageBrowser from "./FirebaseImageBrowser";
+import FirebaseImage from "../widgets/FirebaseImage";
+import FirebaseImageBrowser from "../widgets/FirebaseImageBrowser";
 
 function CreateItem({ itemCallback, ...props }) {
   const [item, setItem] = useState(new Item());

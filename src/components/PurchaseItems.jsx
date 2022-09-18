@@ -1,7 +1,7 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import { updateAvatar, updateFamily } from "../util/firestoreWrite";
-import ItemDetails from "./ItemDetails";
+import ItemDetails from "../widgets/ItemDetails";
 
 function PurchaseItems({ avatar, family, ...props }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -25,10 +25,10 @@ function PurchaseItems({ avatar, family, ...props }) {
     <Typography variant="h4">Purchase Items</Typography>
     {family.shopInventory.length === 0 ? <Typography variant="body">No items for sale.</Typography> :
       family.shopInventory.map(item => {
-        return <Box key={item.uuid}>
+        return <Paper key={item.uuid} sx={{ m: 1 }}>
           <ItemDetails item={item} />
           <Button onClick={() => purchaseItemHandler(item)}>Purchase Item</Button>
-        </Box>
+        </Paper>
       })
     }
   </Box>;

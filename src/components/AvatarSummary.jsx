@@ -1,5 +1,5 @@
 import { Avatar, Button, Grid, Paper, Typography } from "@mui/material";
-import FirebaseImage from "./FirebaseImage";
+import FirebaseImage from "../widgets/FirebaseImage";
 
 function AvatarSummary({ avatar, testAvatarUpdateFunction }) {
   return (

@@ -1,6 +1,6 @@
 import { Box, Button, LinearProgress, List, ListItem, Typography } from "@mui/material";
 import { useGenericItemDefinitions } from "../util/hooks";
-import ItemDetails from "./ItemDetails";
+import ItemDetails from "../widgets/ItemDetails";
 
 /**
  * Component to browse a list of all items, with ability to select an item
