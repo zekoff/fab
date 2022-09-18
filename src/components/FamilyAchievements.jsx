@@ -1,18 +1,16 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
+import AchievementDetails from "../widgets/AchievementDetails";
 
 function FamilyAchievements({ family }) {
   return (
     <>
       <Typography variant="h3">Recent {family.name} Achievements</Typography>
-      <List>
-        {family.recentAchievements.map((achievement, index) => {
-          return (
-            <ListItem key={index}>
-              <ListItemText primary={achievement.description} />
-            </ListItem>
-          )
-        })}
-      </List>
+      {family.recentAchievements.map((achievement, index) => {
+        return (
+          <AchievementDetails key={index} achievement={achievement}
+            component={Paper} sx={{ p: 1, m: 1 }} />
+        )
+      })}
     </>
   );
 }

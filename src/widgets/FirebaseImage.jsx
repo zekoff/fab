@@ -12,7 +12,7 @@ function FirebaseImage({ image, size, ...props }) {
       if (image === null) {
         return;
       }
-      console.log(`Getting URL for ${image}`);
+      console.log(`Getting URL for an image`);
       const url = await getDownloadURL(ref(getStorage(), image));
       setSrc(url);
     })()
