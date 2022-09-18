@@ -48,7 +48,7 @@ class Family {
   availableQuests = []; // list of 0..n Quest objects
   recentAchievements = []; // list of 0..n Achievement objects
   shopInventory = []; // list of 0..n Item objects
-  image; // location of image in Firebase Storage
+  image = null; // location of image in Firebase Storage
 
   static converter = {
     toFirestore: function (familyObject) {
@@ -92,8 +92,8 @@ class ItemDefinition {
   description = "An object of awe and wonder.";
   value = 100;
   tags = []; // list of 0..n item tags
-  theme; // null if generic (usable by any theme)
-  image; // location of the image in Firebase Storage
+  theme = null; // null if generic (usable by any theme)
+  image = null; // location of the image in Firebase Storage
   familyFirestoreId; // null if generic (not custom family item)
 
   static converter = makeConverter(ItemDefinition);
@@ -120,7 +120,7 @@ class Item {
   description = "An item of awe and wonder.";
   value = 100;
   tags = []; // list of 0..n item tags
-  image; // location of the image in Firebase Storage
+  image = null; // location of the image in Firebase Storage
 
   static createFromData(data) {
     const item = new Item();
@@ -144,7 +144,7 @@ class Avatar {
   inventory = []; // list of 0..n Item objects
   unclaimedRewards = []; // list of 0..n Reward objects
   currentQuests = []; // list of 0..n Quest objects
-  image; // location of the image in Firebase Storage
+  image = null; // location of the image in Firebase Storage
 
   static converter = {
     toFirestore: function (avatar) {
@@ -227,9 +227,9 @@ class Reward {
 class Achievement {
   uuid = generateUuid();
   timestamp = 0; // seconds since epoch
-  avatarName; // the person who accomplished this
+  avatarName = null; // the person who accomplished this
   description = "Something the family can be proud of!";
-  type; // string enum -- quest, custom
+  type = null; // string enum -- quest, custom
 
   toString() {
     return this.description;

@@ -6,6 +6,7 @@ function FirebaseImage({ image, ...props }) {
   const [src, setSrc] = useState(null);
   useEffect(() => {
     (async () => {
+      if (image === null) return;
       const url = await getDownloadURL(ref(getStorage(), image));
       setSrc(url);
     })()

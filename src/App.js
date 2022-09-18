@@ -3,6 +3,7 @@ import { Outlet, Route, Routes } from "react-router-dom";
 import AvailableQuests from "./components/AvailableQuests";
 import AvatarDetails from "./components/AvatarDetails";
 import AvatarInventory from "./components/AvatarInventory";
+import CreateItem from "./components/CreateItem";
 import CreateQuest from "./components/CreateQuest";
 import CurrentQuests from "./components/CurrentQuests";
 import FamilyAchievements from "./components/FamilyAchievements";
@@ -10,6 +11,7 @@ import FamilySummary from "./components/FamilySummary";
 import { BottomNavBar, TopAppBar } from "./components/NavigationBars";
 import PurchaseItems from "./components/PurchaseItems";
 import UnclaimedRewards from "./components/UnclaimedRewards";
+import { updateFamily } from "./util/firestoreWrite";
 import { useAccount, useAvatar, useAvatarList, useFamily, useGenericItemDefinitions } from "./util/hooks";
 
 function App() {
@@ -71,9 +73,13 @@ function App() {
         } />
       </Route>
       <Route path="/admin" element={
-        <>
+        <Container>
           <Typography variant="h2">Admin Area NYI</Typography>
-        </>
+          <CreateItem itemCallback={(item)=>{
+            family.shopInventory.push(item);
+            updateFamily(family);
+          }} />
+        </Container>
       } />
     </Routes>
 

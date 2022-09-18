@@ -1,6 +1,7 @@
 # TODO
 
-- Shop component
+- Component to manage family shop inventory (add directly to shop, or save as item definition)
+- Component to create Item Definitions
 - Add fanfare/juice for level-ups and opening treasure boxes. Show coins going into a piggy bank.
 - Allow direct addition of a family achievement
 - Improve achievement recording and display
@@ -15,7 +16,7 @@
 - Implement item tag options as enum-like
 - Capture rich formatted text in quest descriptions
 - Add back in ability to add item(s) as Quest Rewards
-- Refactor CreateQuest and CreateReward for better integration with item browser and reward creation in general. When selecting item for quest creation, consider using Dialog
+- Refactor CreateQuest and CreateReward for better integration with item browser and reward creation in general. When selecting item for quest creation, consider using Dialog. Use CreateItem as a guide for refactoring CreateReward
 - Add toggle to account menu to show screens as if a non-admin is logged in
 - Disable create quest and certain quest buttons if not family admin
 - If user is not logged in, redirect UI to sign-in page
@@ -44,5 +45,12 @@
 - consumable
 - tradeable (can be sent to another as Treasure)
 - transient (when purchased, does not go into inventory)
-- unique (when purchased, disappears from shop)
-- family_defined (created by family admin, and applicable only to that family, contained in family item list vs. defined in top-level Firestore collection)
+- unique (when purchased, disappears from shop) (??)
+- family_defined (created by family admin, and applicable only to that family, contained in family item list vs. defined in top-level Firestore collection) (??)
+- notable (triggers achievement when purchased)
+
+## Potential achievement types
+
+- quest
+- purchase
+- custom
