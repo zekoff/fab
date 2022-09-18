@@ -1,7 +1,6 @@
 # TODO
 
 - Component to manage family shop inventory (add directly to shop, or save as item definition)
-- Component to create Item Definitions
 - Add fanfare/juice for level-ups and opening treasure boxes. Show coins going into a piggy bank.
 - Allow direct addition of a family achievement
 - Improve achievement recording and display
@@ -10,11 +9,13 @@
 - Component to allow user to set their avatar image
 - Restrict avatar data access to correct family
 - Improve quest description storage (ex. line breaks)
+- Rewards created by Create Reward are reusing same UUID
 
 ## Backlog
 
 - Implement item tag options as enum-like
 - Capture rich formatted text in quest descriptions
+- Component to create Item Definitions
 - Add back in ability to add item(s) as Quest Rewards
 - Refactor CreateQuest and CreateReward for better integration with item browser and reward creation in general. When selecting item for quest creation, consider using Dialog. Use CreateItem as a guide for refactoring CreateReward
 - Add toggle to account menu to show screens as if a non-admin is logged in

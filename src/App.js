@@ -63,7 +63,6 @@ function App() {
           <>
             <CurrentQuests family={family} avatar={avatar} sx={{ marginBottom: 2 }} />
             <AvailableQuests family={family} avatar={avatar} sx={{ marginBottom: 2 }} />
-            <CreateQuest family={family} />
           </>
         } />
         <Route path="shop" element={
@@ -76,6 +75,7 @@ function App() {
         <Container>
           <Typography variant="h3">Admin Area</Typography>
           <Divider />
+          <CreateQuest family={family} />
           <Typography variant="h4">Add Item to Family Shop</Typography>
           <CreateItem itemCallback={(item) => {
             family.shopInventory.push(item);

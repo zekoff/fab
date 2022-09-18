@@ -226,7 +226,7 @@ class Reward {
  */
 class Achievement {
   uuid = generateUuid();
-  timestamp = 0; // seconds since epoch
+  timestamp = Date.now(); // ms since epoch
   avatarName = null; // the person who accomplished this
   description = "Something the family can be proud of!";
   type = null; // string enum -- quest, custom

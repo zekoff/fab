@@ -16,6 +16,7 @@ function PurchaseItems({ avatar, family, ...props }) {
     const index = family.shopInventory.indexOf(item);
     family.shopInventory.splice(index, 1);
     avatar.inventory.push(item);
+    avatar.coins -= item.value;
     // Update avatar and family
     updateAvatar(avatar);
     updateFamily(family);
