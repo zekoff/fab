@@ -1,6 +1,6 @@
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
-import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
+import GroupsIcon from '@mui/icons-material/Groups';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import PersonIcon from '@mui/icons-material/Person';
@@ -112,7 +112,7 @@ function BottomNavBar({ ...props }) {
   return <BottomNavigation value={navLocation} onChange={(event, newLocation) => {
     setNavLocation(newLocation);
   }} sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-    <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="/" value="/" />
+    <BottomNavigationAction label="Family" icon={<GroupsIcon />} component={NavLink} to="/" value="/" />
     <BottomNavigationAction label="Avatar" icon={<PersonIcon />} component={NavLink} to="avatar" value="/avatar" />
     <BottomNavigationAction label="Quests" icon={<AssignmentLateIcon />} component={NavLink} to="quests" value="/quests" />
     <BottomNavigationAction label="Shop" icon={<MonetizationOnIcon />} component={NavLink} to="shop" value="/shop" />

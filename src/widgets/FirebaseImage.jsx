@@ -23,6 +23,7 @@ function FirebaseImage({ image, size, ...props }) {
     width={size}
     height={size}
     sx={props.sx}
+    {...props}
   />
 }
 

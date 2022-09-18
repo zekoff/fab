@@ -7,6 +7,7 @@
 - Restrict avatar data access to correct family
 - Improve quest description storage (ex. line breaks)
 - Rewards created by Create Reward are reusing same UUID
+- Set items that avatars have on display from their inventory
 
 ## Backlog
 
