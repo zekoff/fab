@@ -53,4 +53,5 @@
 
 - quest
 - purchase
+- redeem
 - custom

@@ -1,17 +1,17 @@
-import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import AssignmentLateIcon from '@mui/icons-material/AssignmentLate';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import FamilyRestroomIcon from '@mui/icons-material/FamilyRestroom';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, Box, Button, Dialog, DialogTitle, Divider, List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
 import UserButton from "../widgets/UserButton";
 
-import { Link, NavLink } from "react-router-dom";
 import { getAuth, signOut } from 'firebase/auth';
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useUser } from '../util/hooks';
 import FirebaseImage from '../widgets/FirebaseImage';
 
@@ -84,7 +84,7 @@ function TopAppBar({ family, avatar, avatarList, setAvatar, ...props }) {
             </ListItemIcon>
             <ListItemText primary="Change Avatar" />
           </MenuItem>
-          <MenuItem component={Link} to="/admin">
+          <MenuItem component={Link} to="/admin" onClick={handleMenuClose}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
@@ -107,11 +107,15 @@ function TopAppBar({ family, avatar, avatarList, setAvatar, ...props }) {
 }
 
 function BottomNavBar({ ...props }) {
-  return <BottomNavigation showLabels sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-    <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="/" />
-    <BottomNavigationAction label="Avatar" icon={<PersonIcon />} component={NavLink} to="avatar" />
-    <BottomNavigationAction label="Quests" icon={<AssignmentLateIcon />} component={NavLink} to="quests" />
-    <BottomNavigationAction label="Shop" icon={<MonetizationOnIcon />} component={NavLink} to="shop" />
+  const currentLocation = useLocation();
+  const [navLocation, setNavLocation] = useState(currentLocation.pathname);
+  return <BottomNavigation value={navLocation} onChange={(event, newLocation) => {
+    setNavLocation(newLocation);
+  }} sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+    <BottomNavigationAction label="Family" icon={<FamilyRestroomIcon />} component={NavLink} to="/" value="/" />
+    <BottomNavigationAction label="Avatar" icon={<PersonIcon />} component={NavLink} to="avatar" value="/avatar" />
+    <BottomNavigationAction label="Quests" icon={<AssignmentLateIcon />} component={NavLink} to="quests" value="/quests" />
+    <BottomNavigationAction label="Shop" icon={<MonetizationOnIcon />} component={NavLink} to="shop" value="/shop" />
   </BottomNavigation>
 }
 
