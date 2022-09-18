@@ -1,5 +1,5 @@
 import { Box, Button, LinearProgress, List, ListItem, Typography } from "@mui/material";
-import { useGenericItemDefinitions, useGenericItemList } from "../util/hooks";
+import { useGenericItemDefinitions } from "../util/hooks";
 import ItemDetails from "./ItemDetails";
 
 /**

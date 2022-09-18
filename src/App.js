@@ -74,8 +74,10 @@ function App() {
       </Route>
       <Route path="/admin" element={
         <Container>
-          <Typography variant="h2">Admin Area NYI</Typography>
-          <CreateItem itemCallback={(item)=>{
+          <Typography variant="h3">Admin Area</Typography>
+          <Divider />
+          <Typography variant="h4">Add Item to Family Shop</Typography>
+          <CreateItem itemCallback={(item) => {
             family.shopInventory.push(item);
             updateFamily(family);
           }} />

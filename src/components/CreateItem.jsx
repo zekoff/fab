@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Item } from "../util/firestoreClasses";
 import clone from "lodash.clonedeep";
 import FirebaseImage from "./FirebaseImage";
+import FirebaseImageBrowser from "./FirebaseImageBrowser";
 
 function CreateItem({ itemCallback, ...props }) {
   const [item, setItem] = useState(new Item());
@@ -16,14 +17,19 @@ function CreateItem({ itemCallback, ...props }) {
 
   return <Box sx={props.sx}>
     <Stack spacing={1}>
-      <Typography variant="h4">Create Item</Typography>
       <TextField label="Item Name" required value={item.name}
         onChange={makeFieldUpdateHandler("name")} />
       <TextField label="Description" required value={item.description}
         onChange={makeFieldUpdateHandler("description")} />
       <TextField label="Value" type="number" value={item.value}
         onChange={makeFieldUpdateHandler("value")} />
-      <FirebaseImage image={item.image} />
+      <Typography>Image:</Typography><FirebaseImage image={item.image} />
+      <FirebaseImageBrowser storagePrefix="oryx_16-bit_fantasy/items" imageCallback={image => {
+        console.log("updating selected item");
+        const updatedItem = clone(item);
+        updatedItem.image = image;
+        setItem(updatedItem);
+      }} />
       <Button onClick={() => {
         itemCallback(item);
         setItem(new Item());

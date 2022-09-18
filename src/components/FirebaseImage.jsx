@@ -2,11 +2,17 @@ import { Box } from "@mui/material";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 
-function FirebaseImage({ image, ...props }) {
+const DEFAULT_SIZE = 24;
+
+function FirebaseImage({ image, size, ...props }) {
   const [src, setSrc] = useState(null);
+  if (!size) size = DEFAULT_SIZE;
   useEffect(() => {
     (async () => {
-      if (image === null) return;
+      if (image === null) {
+        return;
+      }
+      console.log(`Getting URL for ${image}`);
       const url = await getDownloadURL(ref(getStorage(), image));
       setSrc(url);
     })()
@@ -14,6 +20,8 @@ function FirebaseImage({ image, ...props }) {
   return <Box
     component="img"
     src={src}
+    width={size}
+    height={size}
     sx={props.sx}
   />
 }

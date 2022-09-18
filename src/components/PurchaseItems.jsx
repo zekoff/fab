@@ -19,6 +19,7 @@ function PurchaseItems({ avatar, family, ...props }) {
     // Update avatar and family
     updateAvatar(avatar);
     updateFamily(family);
+    enqueueSnackbar(`Purchased ${item.name} for ${item.value}!`, { variant: "success" });
   };
   return <Box sx={props.sx}>
     <Typography variant="h4">Purchase Items</Typography>
