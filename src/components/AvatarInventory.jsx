@@ -8,8 +8,10 @@ function AvatarInventory({ avatar }) {
       <List>
         {
           avatar.inventory.map(item =>
-            <ItemDetails key={item.uuid} item={item} sx={{ m: 1, p: 1 }}
-              component={Paper} />)
+            <Paper>
+              <ItemDetails key={item.uuid} item={item} sx={{ m: 1, p: 1 }} />
+            </Paper>
+          )
         }
       </List>
     </>

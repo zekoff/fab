@@ -8,9 +8,11 @@
 - Improve quest description storage (ex. line breaks)
 - Rewards created by Create Reward are reusing same UUID
 - Set items that avatars have on display from their inventory
+- Add animations
 
 ## Backlog
 
+- Integrate Phaser as React component
 - Implement item tag options as enum-like
 - Capture rich formatted text in quest descriptions
 - Component to create Item Definitions
