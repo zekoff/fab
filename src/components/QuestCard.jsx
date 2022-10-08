@@ -1,4 +1,5 @@
 import { Card, CardActions, CardContent, Divider, Stack, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 
 /**
  * Display component for quest information, including optionally buttons
@@ -10,7 +11,8 @@ import { Card, CardActions, CardContent, Divider, Stack, Typography } from "@mui
  */
 function QuestCard({ quest, buttons, sx }) {
   return (
-    <Card sx={{ margin: 1, ...sx }}>
+    <Card sx={{ margin: 1, ...sx }} component={motion.div}
+      initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
       <CardContent>
         <Stack>
           <Typography variant="h5">{quest.name}</Typography>

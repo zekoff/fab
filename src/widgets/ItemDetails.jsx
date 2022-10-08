@@ -8,8 +8,7 @@ const IMG_SIZE = 36;
 
 function ItemDetails({ item, ...props }) {
   const [showDetail, setShowDetail] = useState(false);
-  return <Box onClick={() => setShowDetail(!showDetail)} sx={props.sx}
-    component={props.component}>
+  return <Box onClick={() => setShowDetail(!showDetail)} sx={props.sx}>
     <Stack direction="column">
       <Stack direction="row" alignItems="center">
         <FirebaseImage image={item.image}

@@ -1,4 +1,6 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import treasureImage from "../assets/treasure.jpg";
 import { updateAvatar } from "../util/firestoreWrite";
 
 function UnclaimedRewards({ avatar, ...props }) {
@@ -22,12 +24,19 @@ function UnclaimedRewards({ avatar, ...props }) {
   }
   return <Box sx={props.sx}>
     <Typography variant="h5">Rewards to Claim:</Typography>
-    {avatar.unclaimedRewards.map(reward => {
-      return <Paper key={reward.uuid} sx={{ p: 1, m: 1 }}>
-        <Typography>{reward.toString()}</Typography>
-        <Button onClick={() => claimRewardHandler(reward)}>Claim Reward</Button>
-      </Paper>
-    })}
+    <Grid container>
+      {avatar.unclaimedRewards.map(reward => {
+        return <Grid xs={6} md={3} key={reward.uuid}>
+          <Paper sx={{ p: 1, m: 1 }}>
+            <Stack>
+              <Typography>{reward.toString()}</Typography>
+              <Box component="img" src={treasureImage} sx={{ width: 150, height: 120 }} />
+              <Button onClick={() => claimRewardHandler(reward)}>Claim Reward</Button>
+            </Stack>
+          </Paper>
+        </Grid>
+      })}
+    </Grid>
   </Box>
 }
 
