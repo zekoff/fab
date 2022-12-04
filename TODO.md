@@ -38,6 +38,7 @@
 - Add a display-only screen for family status and recent achievements (kiosk mode)
 - Add filtering/searching for inventory list
 - Add lazy loading / fade-in of images to FirestoreImage component
+- Idea from Emma Cate: donate coins into family treasure chest, and unlock new quests or rewards once you hit a coin threshold
 
 ## Potential item tags
 
