@@ -1,18 +1,26 @@
 # TODO
 
-- Component to manage family shop inventory (add directly to shop, or save as item definition)
+## Bugs
+
+- Navigation bar is not pinned to bottom of home (index, "/") screen
+- Home screen jumps around due to invisible scroll bar messing up layout?
+- Rewards created by Create Reward are reusing same UUID
+
+## Key items
+
 - Add fanfare/juice for level-ups and opening treasure boxes. Show coins going into a piggy bank.
 - Allow direct addition of a family achievement
-- Component to allow user to set their avatar image
-- Restrict avatar data access to correct family
-- Improve quest description storage (ex. line breaks)
-- Rewards created by Create Reward are reusing same UUID
-- Set items that avatars have on display from their inventory
-- Add animations
+- Admin function to send Reward directly to an Avatar
+- Adjust shop display: show user's coins at top, show prices for each item directly on card, hide purchase button until they expand details
 
 ## Backlog
 
-- Integrate Phaser as React component
+- Improve quest description storage (ex. line breaks)
+- Set items that avatars have on display from their inventory
+- Add animations
+- Component to allow user to set their avatar image
+- Component to manage family shop inventory (add directly to shop, or save as item definition)
+- Restrict avatar data access to correct family
 - Implement item tag options as enum-like
 - Capture rich formatted text in quest descriptions
 - Component to create Item Definitions
