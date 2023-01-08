@@ -32,7 +32,7 @@ function AvatarDetails({ avatar }) {
         onClick={() => setDialogOpen(true)} />
       <Typography variant="h5">{avatar.name}</Typography>
       <Typography>Level: {avatar.level}</Typography>
-      <Typography>XP: {avatar.xp}</Typography>
+      <Typography>XP: {avatar.xp} ({100-avatar.xp} XP to next level)</Typography>
       <Typography>Coins: {avatar.coins}</Typography>
     </>
   );

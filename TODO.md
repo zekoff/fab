@@ -2,9 +2,8 @@
 
 ## Bugs
 
-- Navigation bar is not pinned to bottom of home (index, "/") screen
-- Home screen jumps around due to invisible scroll bar messing up layout?
 - Rewards created by Create Reward are reusing same UUID
+- Notifications sometimes last too long, and block going from admin area back to regular area
 
 ## Key items
 
@@ -12,9 +11,12 @@
 - Allow direct addition of a family achievement
 - Admin function to send Reward directly to an Avatar
 - Adjust shop display: show user's coins at top, show prices for each item directly on card, hide purchase button until they expand details
+- Add number badge for unclaimed rewards
 
 ## Backlog
 
+- Themes or decorations each user can set for their own interface
+- Separate "Inventory" from "Purchase History"
 - Improve quest description storage (ex. line breaks)
 - Set items that avatars have on display from their inventory
 - Add animations
@@ -28,6 +30,7 @@
 - Refactor CreateQuest and CreateReward for better integration with item browser and reward creation in general. When selecting item for quest creation, consider using Dialog. Use CreateItem as a guide for refactoring CreateReward
 - Add toggle to account menu to show screens as if a non-admin is logged in
 - Disable create quest and certain quest buttons if not family admin
+- Allow a time limit to be set for quest completion
 - If user is not logged in, redirect UI to sign-in page
 - Build account creation screens
 - Implement one-time sign-up codes for family admins to extend invitations
