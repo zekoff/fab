@@ -12,6 +12,7 @@
 - Admin function to send Reward directly to an Avatar
 - Adjust shop display: show user's coins at top, show prices for each item directly on card, hide purchase button until they expand details
 - Add number badge for unclaimed rewards
+- Allow adding of multiple copies of rewards (and potentially quests) based on the same name and description
 
 ## Backlog
 
