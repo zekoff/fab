@@ -51,6 +51,9 @@
 - Add filtering/searching for inventory list
 - Add lazy loading / fade-in of images to FirestoreImage component
 - Idea from Emma Cate: donate coins into family treasure chest, and unlock new quests or rewards once you hit a coin threshold
+- Evergreen quests like fold laundry or items like candy. Don't disappear after use
+- Bulk quest or item addition
+- Optional descriptions for quests and items
 
 ## Potential item tags
 
